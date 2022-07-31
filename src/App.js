@@ -1,7 +1,31 @@
+import { useState } from "react";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import Navbar from "./components/Navbar";
 import "@fontsource/roboto";
-function App() {
+import { CssBaseline } from "@mui/material";
+
+const light = {
+  palette: {
+    mode: "light",
+  },
+};
+
+const dark = {
+  palette: {
+    mode: "dark",
+  },
+};
+
+const App = () => {
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const changeTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
   return (
-    <div>Hello there!!!</div>
+    <ThemeProvider theme={isDarkTheme ? createTheme(dark) : createTheme(light)}>
+      <CssBaseline />
+      <Navbar isDarkTheme={isDarkTheme} changeTheme={changeTheme} />
+    </ThemeProvider>
   );
 }
 
