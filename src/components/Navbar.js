@@ -12,9 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { styled, Switch } from '@mui/material';
-// import Logo from "../images/logo_l.jpg";
 
-// const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const Navbar = (props) => {
@@ -57,7 +55,7 @@ const Navbar = (props) => {
             }}
           >
             {/* <img style={"width": "10%"} src={Logo} alt="logo" /> */}
-            T₹ACK MONEY
+            t₹ack money
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -96,7 +94,6 @@ const Navbar = (props) => {
               <MenuItem onClick={handleCloseNavMenu}>
                 <Typography textAlign="center">Manage Accounts</Typography>
               </MenuItem>
-              <MaterialUISwitch checked={isDarkTheme} onChange={changeTheme} sx={{ m: 1 }} />
             </Menu>
           </Box>
           <Typography
@@ -109,13 +106,13 @@ const Navbar = (props) => {
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
-              fontWeight: 700,
+              fontWeight: 100,
               fontSize: 30,
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
-            T₹ACK MONEY
+            t₹ack money
           </Typography>
           {/* Options for large screens */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
@@ -131,8 +128,11 @@ const Navbar = (props) => {
             >
               Manage Accounts
             </Button>
-            <Button onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-              <MaterialUISwitch checked={isDarkTheme} onChange={changeTheme} />
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Reports
             </Button>
           </Box>
 
@@ -163,6 +163,9 @@ const Navbar = (props) => {
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <MaterialUISwitch checked={isDarkTheme} onChange={changeTheme} sx={{ m: 1 }} />
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>
