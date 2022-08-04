@@ -1,11 +1,11 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,21 +14,33 @@ import MenuItem from '@mui/material/MenuItem';
 import { styled, Switch } from '@mui/material';
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const navButtons = ["All Transactions", "Manage Accounts", "Reports"];
 
 const Navbar = (props) => {
   const { isDarkTheme, changeTheme } = props;
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+  let navigate = useNavigate();
+  let location = useLocation();
+  let navValue = location?.pathname === '/' ? 0 : location?.pathname === '/accounts' ? 1 : 2;
+  const [value, setValue] = useState(navValue);
+  const routes = ["/", "/accounts", "/reports"];
+  useEffect(() => {
+    if (location?.pathname === '/') {
+      setValue(0)
+    } else if (location?.pathname === '/accounts') {
+      setValue(1)
+    } else {
+      setValue(2)
+    }
+  }, [location])
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
+  const handleNavClick = (val) => {
+    navigate(routes[val], { replace: false });
   };
 
   const handleCloseUserMenu = () => {
@@ -37,65 +49,26 @@ const Navbar = (props) => {
 
   return (
     <AppBar position="static">
-      <Container maxWidth="xl">
+      <Container maxWidth="xxl">
         <Toolbar disableGutters>
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/", { replace: false })}
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
               fontFamily: 'monospace',
               fontWeight: 700,
-              fontSize: 30,
+              fontSize: 32,
               color: 'inherit',
               textDecoration: 'none',
+              cursor: "pointer"
             }}
           >
-            {/* <img style={"width": "10%"} src={Logo} alt="logo" /> */}
             t₹ack money
           </Typography>
-
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
-            >
-              {/* Options for small screen */}
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Add Transaction</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Manage Accounts</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
           <Typography
             variant="h5"
             noWrap
@@ -103,37 +76,35 @@ const Navbar = (props) => {
             href=""
             sx={{
               mr: 2,
+              ml: 0.5,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
               fontFamily: 'monospace',
-              fontWeight: 100,
-              fontSize: 30,
+              fontWeight: 700,
+              fontSize: 26,
               color: 'inherit',
               textDecoration: 'none',
             }}
           >
             t₹ack money
           </Typography>
-          {/* Options for large screens */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Add Transaction
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Manage Accounts
-            </Button>
-            <Button
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Reports
-            </Button>
+            {navButtons.map((val, idx) => (
+              <Button
+                key={idx}
+                onClick={() => handleNavClick(idx)}
+                sx={{
+                  my: 2,
+                  display: 'block',
+                  textTransform: "none",
+                  color: value === idx ? '#90caf9' : 'white',
+                  fontWeight: value === idx ? "900" : "400",
+                  fontSize: value === idx ? 22 : 18,
+                }}
+              >
+                {val}
+              </Button>
+            ))}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
