@@ -1,4 +1,17 @@
-import { Box, Button, Card, CardActions, CardContent, Container, Typography } from '@mui/material';
+import { useState } from 'react';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography
+} from '@mui/material';
 
 const allAccounts = [
   {
@@ -28,13 +41,29 @@ const allAccounts = [
 ];
 
 function ManageAccounts() {
+  const [accDialogOpen, setAccDialogOpen] = useState(false);
+
+  const OpenAccDialog = () => {
+    setAccDialogOpen(true);
+  };
+
+  const CloseAccDialog = () => {
+    setAccDialogOpen(false);
+  };
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h5" gutterBottom component="div" sx={{ marginBottom: 2 }}>
           My Accounts
         </Typography>
-        <Button variant='contained' sx={{ textTransform: "none" }}>Add Account</Button>
+        <Button
+          size='small'
+          variant='contained'
+          sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
+          onClick={OpenAccDialog}
+        >
+          Add Account
+        </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
         {allAccounts.map((val, idx) => (
@@ -60,8 +89,32 @@ function ManageAccounts() {
           </Card>
         ))}
       </Box>
+      <AddAccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
     </Container>
   )
+}
+
+const AddAccountDialog = ({ open, handleClose }) => {
+  return <Dialog
+    open={open}
+    onClose={handleClose}
+    aria-labelledby="responsive-dialog-title"
+  >
+    <DialogTitle id="responsive-dialog-title">
+      {"Add New Account"}
+    </DialogTitle>
+    <DialogContent>
+      heheh
+    </DialogContent>
+    <DialogActions>
+      <Button autoFocus onClick={handleClose}>
+        Cancel
+      </Button>
+      <Button onClick={handleClose} autoFocus>
+        Add
+      </Button>
+    </DialogActions>
+  </Dialog>
 }
 
 const getFormattedDate = (s) => {
