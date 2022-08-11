@@ -6,12 +6,10 @@ import {
   CardActions,
   CardContent,
   Container,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   Typography
 } from '@mui/material';
+import AccountDialog from './dialogs/AccountDialog';
+import DeleteDialog from './dialogs/DeleteDialog';
 
 const allAccounts = [
   {
@@ -40,8 +38,9 @@ const allAccounts = [
   }
 ];
 
-function ManageAccounts() {
+const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
+  const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState(false);
 
   const OpenAccDialog = () => {
     setAccDialogOpen(true);
@@ -49,6 +48,14 @@ function ManageAccounts() {
 
   const CloseAccDialog = () => {
     setAccDialogOpen(false);
+  };
+
+  const OpenAccDeleteDialog = () => {
+    setDeleteAccDialogOpen(true);
+  };
+
+  const CloseAccDeleteDialog = () => {
+    setDeleteAccDialogOpen(false);
   };
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
@@ -84,37 +91,15 @@ function ManageAccounts() {
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
               <Button size="small">Edit</Button>
-              <Button size="small">Delete</Button>
+              <Button size="small" onClick={OpenAccDeleteDialog}>Delete</Button>
             </CardActions>
           </Card>
         ))}
       </Box>
-      <AddAccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
+      <AccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
+      <DeleteDialog open={accDeleteDialogOpen} handleClose={CloseAccDeleteDialog} />
     </Container>
   )
-}
-
-const AddAccountDialog = ({ open, handleClose }) => {
-  return <Dialog
-    open={open}
-    onClose={handleClose}
-    aria-labelledby="responsive-dialog-title"
-  >
-    <DialogTitle id="responsive-dialog-title">
-      {"Add New Account"}
-    </DialogTitle>
-    <DialogContent>
-      heheh
-    </DialogContent>
-    <DialogActions>
-      <Button autoFocus onClick={handleClose}>
-        Cancel
-      </Button>
-      <Button onClick={handleClose} autoFocus>
-        Add
-      </Button>
-    </DialogActions>
-  </Dialog>
 }
 
 const getFormattedDate = (s) => {
