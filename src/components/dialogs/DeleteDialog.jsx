@@ -1,6 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
 
-const DeleteDialog = ({ open, handleClose }) => {
+const DeleteDialog = ({ open, handleClose, deleteAccount, id }) => {
+  const handleDeleteAccount = () => {
+    deleteAccount(id)
+    handleClose()
+  }
   return (
     <Dialog
       open={open}
@@ -17,7 +21,7 @@ const DeleteDialog = ({ open, handleClose }) => {
         <Button autoFocus onClick={handleClose}>
           Cancel
         </Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={handleDeleteAccount} autoFocus>
           Delete
         </Button>
       </DialogActions>

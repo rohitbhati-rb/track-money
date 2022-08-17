@@ -40,7 +40,8 @@ const allAccounts = [
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
-  const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState(false);
+  const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
+  const [accounts, setAccounts] = useState(allAccounts);
 
   const OpenAccDialog = () => {
     setAccDialogOpen(true);
@@ -50,13 +51,17 @@ const ManageAccounts = () => {
     setAccDialogOpen(false);
   };
 
-  const OpenAccDeleteDialog = () => {
-    setDeleteAccDialogOpen(true);
+  const OpenAccDeleteDialog = (id) => {
+    setDeleteAccDialogOpen({ open: true, id: id });
   };
 
   const CloseAccDeleteDialog = () => {
-    setDeleteAccDialogOpen(false);
+    setDeleteAccDialogOpen({ open: false, id: undefined });
   };
+  const deleteAccount = (id) => {
+    const newAccounts = accounts.filter(acc => acc.id !== id)
+    setAccounts(newAccounts)
+  }
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -73,7 +78,7 @@ const ManageAccounts = () => {
         </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
-        {allAccounts.map((val, idx) => (
+        {accounts.map((val, idx) => (
           <Card sx={{ margin: "15px 0", display: "flex", justifyContent: "space-between" }} key={idx}>
             <CardContent>
               <Typography variant="h5" component="div">
@@ -91,13 +96,13 @@ const ManageAccounts = () => {
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
               <Button size="small">Edit</Button>
-              <Button size="small" onClick={OpenAccDeleteDialog}>Delete</Button>
+              <Button size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
             </CardActions>
           </Card>
         ))}
+        <AccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
+        <DeleteDialog id={accDeleteDialogOpen.id} open={accDeleteDialogOpen.open} handleClose={CloseAccDeleteDialog} deleteAccount={deleteAccount} />
       </Box>
-      <AccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
-      <DeleteDialog open={accDeleteDialogOpen} handleClose={CloseAccDeleteDialog} />
     </Container>
   )
 }
