@@ -1,7 +1,23 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material"
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField
+} from "@mui/material"
 
 
-const AccountDialog = ({ open, handleClose }) => {
+const AccountDialog = ({ newAccount, setNewAccount, addAccount, open, handleClose }) => {
+  const onInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewAccount((prev) => ({ ...prev, [name]: value }))
+    setNewAccount((prev) => ({ ...prev, id: 457, createdAt: Date() }))
+  }
+  const handleAddAccount = () => {
+    addAccount()
+    handleClose()
+  }
   return (
     <Dialog
       open={open}
@@ -15,6 +31,9 @@ const AccountDialog = ({ open, handleClose }) => {
         <TextField
           id="outlined-error-helper-text"
           label="Account Name"
+          name="name"
+          value={newAccount.name}
+          onChange={onInputChange}
           error={false}
           fullWidth
           sx={{ marginTop: 2 }}
@@ -23,6 +42,9 @@ const AccountDialog = ({ open, handleClose }) => {
         <TextField
           id="outlined-error-helper-text"
           label="Balance"
+          name="balance"
+          value={newAccount.balance}
+          onChange={onInputChange}
           error={false}
           fullWidth
           sx={{ marginTop: 2 }}
@@ -33,7 +55,7 @@ const AccountDialog = ({ open, handleClose }) => {
         <Button autoFocus onClick={handleClose}>
           Cancel
         </Button>
-        <Button onClick={handleClose} autoFocus>
+        <Button onClick={handleAddAccount} autoFocus>
           Add
         </Button>
       </DialogActions>

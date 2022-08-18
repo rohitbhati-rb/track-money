@@ -1,4 +1,10 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material"
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "@mui/material"
 
 const DeleteDialog = ({ open, handleClose, deleteAccount, id }) => {
   const handleDeleteAccount = () => {

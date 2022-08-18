@@ -37,11 +37,13 @@ const allAccounts = [
     createdAt: Date()
   }
 ];
+const emptyAccount = { id: undefined, name: '', balance: '', createdAt: '' };
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const [accounts, setAccounts] = useState(allAccounts);
+  const [newAccount, setNewAccount] = useState(emptyAccount);
 
   const OpenAccDialog = () => {
     setAccDialogOpen(true);
@@ -58,6 +60,12 @@ const ManageAccounts = () => {
   const CloseAccDeleteDialog = () => {
     setDeleteAccDialogOpen({ open: false, id: undefined });
   };
+  const addAccount = () => {
+    const newAccounts = accounts;
+    newAccounts.push(newAccount);
+    setAccounts(newAccounts);
+    setNewAccount(emptyAccount)
+  }
   const deleteAccount = (id) => {
     const newAccounts = accounts.filter(acc => acc.id !== id)
     setAccounts(newAccounts)
@@ -100,8 +108,19 @@ const ManageAccounts = () => {
             </CardActions>
           </Card>
         ))}
-        <AccountDialog open={accDialogOpen} handleClose={CloseAccDialog} />
-        <DeleteDialog id={accDeleteDialogOpen.id} open={accDeleteDialogOpen.open} handleClose={CloseAccDeleteDialog} deleteAccount={deleteAccount} />
+        <AccountDialog
+          newAccount={newAccount}
+          setNewAccount={setNewAccount}
+          addAccount={addAccount}
+          open={accDialogOpen}
+          handleClose={CloseAccDialog}
+        />
+        <DeleteDialog
+          id={accDeleteDialogOpen.id}
+          open={accDeleteDialogOpen.open}
+          handleClose={CloseAccDeleteDialog}
+          deleteAccount={deleteAccount}
+        />
       </Box>
     </Container>
   )
