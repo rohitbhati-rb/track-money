@@ -8,44 +8,50 @@ import {
   Container,
   Typography
 } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 
 const allAccounts = [
   {
-    id: 1,
+    id: uuidv4(),
     name: "SBI",
     balance: 111523,
     createdAt: Date()
   },
   {
-    id: 2,
+    id: uuidv4(),
     name: "HDFC",
     balance: 99923,
     createdAt: Date()
   },
   {
-    id: 3,
+    id: uuidv4(),
     name: "ICICI",
     balance: 14523,
     createdAt: Date()
   },
   {
-    id: 4,
+    id: uuidv4(),
     name: "Paytm Wallet",
     balance: 523,
     createdAt: Date()
   }
 ];
-const emptyAccount = { id: undefined, name: '', balance: '', createdAt: '' };
+const emptyAccount = { id: '', name: '', balance: '', createdAt: '' };
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
+  const [isEditAccount, setIsEditAccount] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const [accounts, setAccounts] = useState(allAccounts);
   const [newAccount, setNewAccount] = useState(emptyAccount);
 
-  const OpenAccDialog = () => {
+  const OpenAccDialog = (acc) => {
+    if (acc !== null) {
+      setNewAccount(acc);
+      setIsEditAccount(true);
+    }
     setAccDialogOpen(true);
   };
 
@@ -60,11 +66,20 @@ const ManageAccounts = () => {
   const CloseAccDeleteDialog = () => {
     setDeleteAccDialogOpen({ open: false, id: undefined });
   };
-  const addAccount = () => {
+  const addNewAccount = () => {
     const newAccounts = accounts;
     newAccounts.push(newAccount);
     setAccounts(newAccounts);
-    setNewAccount(emptyAccount)
+    setNewAccount(emptyAccount);
+  }
+  const editAccount = () => {
+    const allAccounts = accounts;
+    let idx = allAccounts.findIndex(val => val.id === newAccount.id);
+    allAccounts[idx].name = newAccount.name;
+    allAccounts[idx].balance = newAccount.balance;
+    setAccounts(allAccounts);
+    setNewAccount(emptyAccount);
+    setIsEditAccount(false);
   }
   const deleteAccount = (id) => {
     const newAccounts = accounts.filter(acc => acc.id !== id)
@@ -80,7 +95,7 @@ const ManageAccounts = () => {
           size='small'
           variant='contained'
           sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
-          onClick={OpenAccDialog}
+          onClick={() => OpenAccDialog(null)}
         >
           Add Account
         </Button>
@@ -103,15 +118,16 @@ const ManageAccounts = () => {
               </Typography>
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
-              <Button size="small">Edit</Button>
+              <Button size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
               <Button size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
             </CardActions>
           </Card>
         ))}
         <AccountDialog
+          isEditAccount={isEditAccount}
           newAccount={newAccount}
           setNewAccount={setNewAccount}
-          addAccount={addAccount}
+          addAccount={isEditAccount ? editAccount : addNewAccount}
           open={accDialogOpen}
           handleClose={CloseAccDialog}
         />

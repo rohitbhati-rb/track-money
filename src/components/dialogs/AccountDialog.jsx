@@ -5,14 +5,16 @@ import {
   DialogContent,
   DialogTitle,
   TextField
-} from "@mui/material"
+} from "@mui/material";
+import { v4 as uuidv4 } from 'uuid';
 
 
-const AccountDialog = ({ newAccount, setNewAccount, addAccount, open, handleClose }) => {
+const AccountDialog = ({ isEditAccount, newAccount, setNewAccount, addAccount, open, handleClose }) => {
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewAccount((prev) => ({ ...prev, [name]: value }))
-    setNewAccount((prev) => ({ ...prev, id: 457, createdAt: Date() }))
+    if(!isEditAccount)
+      setNewAccount((prev) => ({ ...prev, id: uuidv4(), createdAt: Date() }))
   }
   const handleAddAccount = () => {
     addAccount()
@@ -25,7 +27,7 @@ const AccountDialog = ({ newAccount, setNewAccount, addAccount, open, handleClos
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
-        {"Add New Account"}
+        {isEditAccount ? "Edit Account" : "Add New Account"}
       </DialogTitle>
       <DialogContent sx={{ padding: "5 1" }}>
         <TextField
@@ -52,11 +54,11 @@ const AccountDialog = ({ newAccount, setNewAccount, addAccount, open, handleClos
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>
-          Cancel
+        <Button autoFocus onClick={handleClose} sx={{ textTransform: "none" }}>
+          {"Cancel"}
         </Button>
-        <Button onClick={handleAddAccount} autoFocus>
-          Add
+        <Button onClick={handleAddAccount} autoFocus sx={{ textTransform: "none" }}>
+          {isEditAccount ? "Edit" : "Add"}
         </Button>
       </DialogActions>
     </Dialog>
