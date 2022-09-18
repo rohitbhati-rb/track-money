@@ -15,13 +15,23 @@ jobs:
         node-version: [ 16.x ]
 
     steps:
+    - name: Checkout repository
     - uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+
+    - name: Installing Dependencies
     - run: npm ci
     # - run: npm test
+
+    - name: Building Track Money React App
     - run: npm run build
-    - run: npm run deploy
+
+    - name: Deploying Track Money React App
+    - uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: build
