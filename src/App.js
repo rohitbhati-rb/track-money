@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -33,7 +33,9 @@ const App = () => {
       <CssBaseline />
       <Navbar isDarkTheme={isDarkTheme} changeTheme={changeTheme} />
       <Routes>
-        <Route path="/" element={<AllTransactions />} />
+        {/* <Route exact path="/" element={<Navigate to="/transactions" replace={false} />} /> */}
+        <Route path="/" element={<Navigate to="/transactions" replace={false} />} />
+        <Route path="/transactions" element={<AllTransactions />} />
         <Route path="/accounts" element={<ManageAccounts />} />
         <Route path="/reports" element={<Reports />} />
       </Routes>
