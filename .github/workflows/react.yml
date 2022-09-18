@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
@@ -24,11 +24,11 @@ jobs:
         cache: 'npm'
 
     - name: Installing Dependencies
-    - run: npm ci
+      run: npm ci
     # - run: npm test
 
     - name: Building Track Money React App
-    - run: npm run build
+      run: npm run build
 
     - name: Deploying Track Money React App
       uses: JamesIves/github-pages-deploy-action@4.1.1
