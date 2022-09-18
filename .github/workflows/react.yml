@@ -31,7 +31,6 @@ jobs:
     - run: npm run build
 
     - name: Deploying Track Money React App
-    - uses: JamesIves/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        branch: gh-pages
         folder: build
