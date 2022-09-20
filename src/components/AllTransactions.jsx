@@ -2,7 +2,7 @@ import React from 'react'
 
 function AllTransactions() {
   return (
-    <div>All Transactions</div>
+    <div>Alll Transactions</div>
   )
 }
 
