@@ -3,7 +3,7 @@ name: TrackMoneyFrontend_CI_CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master" , "vercel-deploy" ]
 
 jobs:
   build-and-deploy:
