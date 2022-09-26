@@ -2,7 +2,7 @@ name: TrackMoneyFrontend_CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches-ignore: [ "deployment" ]
 
 jobs:
   build:
