@@ -10,15 +10,15 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 export default function BottomNav() {
   let navigate = useNavigate();
   let location = useLocation();
-  let navValue = location?.pathname === '/' ? 0 : location?.pathname === '/accounts' ? 1 : 2;
+  let navValue = location?.pathname === '/transactions' ? 0 : location?.pathname === '/accounts' ? 1 : location?.pathname === '/reports' ? 2 : 3;
   const [value, setValue] = useState(navValue);
-  const routes = ["/", "/accounts", "/reports"];
+  const routes = ["/transactions", "/accounts", "/reports"];
   useEffect(() => {
-    if (location?.pathname === '/') {
+    if (location?.pathname === '/transactions') {
       setValue(0)
     } else if (location?.pathname === '/accounts') {
       setValue(1)
-    } else {
+    } else if (location?.pathname === '/reports') {
       setValue(2)
     }
   }, [location])
