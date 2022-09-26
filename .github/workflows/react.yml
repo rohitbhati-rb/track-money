@@ -1,0 +1,29 @@
+name: TrackMoneyFrontend_CI
+
+on:
+  push:
+    branches-ignore: [ "deployment" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Installing Dependencies
+        run: npm ci
+      # - run: npm test
+
+      - name: Building Track Money React App
+        run: npm run build
