@@ -11,6 +11,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
+import { getFormattedDate } from './helpers';
 
 const allAccounts = [
   {
@@ -141,10 +142,5 @@ const ManageAccounts = () => {
     </Container>
   )
 }
-
-const getFormattedDate = (s) => {
-  let d = new Date(s);
-  return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
-};
 
 export default ManageAccounts;
