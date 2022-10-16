@@ -8,7 +8,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
-import IncomeCard from './cards/IncomeCard';
 
 // transaction types
 // 1 -> Expense
@@ -81,16 +80,13 @@ const Transactions = () => {
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
         {transactions.map((val, idx) => (
-          val.type === 1 ?
+          val.type === 1 || val.type === 3 ?
             <ExpenseCard data={val} key={idx} />
             :
             val.type === 2 ?
               <TransferCard data={val} key={idx} />
               :
-              val.type === 3 ?
-                <IncomeCard data={val} key={idx} />
-                :
-                ""
+              ""
         ))}
       </Box>
     </Container>
