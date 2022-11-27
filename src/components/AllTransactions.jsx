@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -6,6 +6,7 @@ import {
   Typography
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
+import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
 
@@ -60,9 +61,46 @@ const allTransactions = [
     updatedAt: Date()
   }
 ];
+const emptyTxn = {
+  id: '',
+  type: undefined,
+  description: '',
+  amount: undefined,
+  expense: {
+    payee: '',
+    account: { id: '', name: '' },
+  },
+  transfer: {
+    fromAcc: { id: '', name: '' },
+    toAcc: { id: '', name: '' },
+  },
+  income: {
+    payer: '',
+    account: { id: '', name: '' },
+  },
+  tags: [{ id: '', value: '' }],
+  createdAt: '',
+  updatedAt: ''
+};
 
 const Transactions = () => {
-  // const [transactions, setTransactions] = useState(allTransactions);
+  const [transactions, setTransactions] = useState(allTransactions);
+  const [txnDialogOpen, setTxnDialogOpen] = useState(false);
+  const [newTxn, setNewTxn] = useState(emptyTxn);
+
+  const OpenTxnDialog = () => {
+    setTxnDialogOpen(true)
+  }
+  const CloseTxnDialog = () => {
+    setTxnDialogOpen(false)
+  }
+  const addNewTxn = () => {
+    const txns = transactions;
+    txns.push(newTxn)
+    setTransactions(txns)
+    setNewTxn(emptyTxn)
+  }
+
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -73,13 +111,13 @@ const Transactions = () => {
           size='small'
           variant='contained'
           sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
-        // onClick={}
+          onClick={OpenTxnDialog}
         >
           Add Transaction
         </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
-        {allTransactions.map((val, idx) => (
+        {transactions.map((val, idx) => (
           val.type === 1 || val.type === 3 ?
             <ExpenseCard data={val} key={idx} />
             :
@@ -88,6 +126,13 @@ const Transactions = () => {
               :
               ""
         ))}
+        <TransactionDialog
+          open={txnDialogOpen}
+          handleClose={CloseTxnDialog}
+          newTxn={newTxn}
+          setNewTxn={setNewTxn}
+          addNewTxn={addNewTxn}
+        />
       </Box>
     </Container>
   )
