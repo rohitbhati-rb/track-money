@@ -63,22 +63,28 @@ const allTransactions = [
 ];
 const emptyTxn = {
   id: '',
-  type: undefined,
+  type: 1,
   description: '',
-  amount: undefined,
-  expense: {
-    payee: '',
-    account: { id: '', name: '' },
-  },
-  transfer: {
-    fromAcc: { id: '', name: '' },
-    toAcc: { id: '', name: '' },
-  },
-  income: {
-    payer: '',
-    account: { id: '', name: '' },
-  },
+  amount: 0,
+  payee: '',//1
+  payer: '',//3
+  account: { id: '', name: '' },//1 & 3
+  fromAcc: { id: '', name: '' },//2
+  toAcc: { id: '', name: '' },//2
+  // expense: {
+  //   payee: '',
+  //   account: { id: '', name: '' },
+  // },
+  // transfer: {
+  //   fromAcc: { id: '', name: '' },
+  //   toAcc: { id: '', name: '' },
+  // },
+  // income: {
+  //   payer: '',
+  //   account: { id: '', name: '' },
+  // },
   tags: [{ id: '', value: '' }],
+  dateTime: '',
   createdAt: '',
   updatedAt: ''
 };
@@ -97,8 +103,10 @@ const Transactions = () => {
   const addNewTxn = () => {
     const txns = transactions;
     txns.push(newTxn)
+    console.log(newTxn)
     setTransactions(txns)
     setNewTxn(emptyTxn)
+    console.log(newTxn)
   }
 
   return (
