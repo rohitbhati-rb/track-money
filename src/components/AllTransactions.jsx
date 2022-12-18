@@ -68,21 +68,9 @@ const emptyTxn = {
   amount: 0,
   payee: '',//1
   payer: '',//3
-  account: { id: '', name: '' },//1 & 3
-  fromAcc: { id: '', name: '' },//2
-  toAcc: { id: '', name: '' },//2
-  // expense: {
-  //   payee: '',
-  //   account: { id: '', name: '' },
-  // },
-  // transfer: {
-  //   fromAcc: { id: '', name: '' },
-  //   toAcc: { id: '', name: '' },
-  // },
-  // income: {
-  //   payer: '',
-  //   account: { id: '', name: '' },
-  // },
+  account: '', // { id: '', name: '' }, 1 & 3
+  fromAcc: '', // { id: '', name: '' }, 2
+  toAcc: '', // { id: '', name: '' }, 2
   tags: [{ id: '', value: '' }],
   dateTime: '',
   createdAt: '',

@@ -1,5 +1,40 @@
-import { Box, TextField } from "@mui/material";
+import {
+  Box,
+  TextField,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormHelperText
+} from "@mui/material";
+import { v4 as uuidv4 } from 'uuid';
 
+const allAccounts = [
+  {
+    id: uuidv4(),
+    name: "SBI",
+    balance: 111523,
+    createdAt: Date()
+  },
+  {
+    id: uuidv4(),
+    name: "HDFC",
+    balance: 99923,
+    createdAt: Date()
+  },
+  {
+    id: uuidv4(),
+    name: "ICICI",
+    balance: 14523,
+    createdAt: Date()
+  },
+  {
+    id: uuidv4(),
+    name: "Paytm Wallet",
+    balance: 523,
+    createdAt: Date()
+  }
+];
 const TxnForm = ({ newTxn, setNewTxn }) => {
   const onInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,12 +51,18 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
             name={newTxn.type === 1 ? "payee" : "payer"}
             value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
             onChange={onInputChange}
-            error={false}
             fullWidth
-            sx={{ marginTop: 2 }}
+            required
+            sx={{ my: 1.25 }}
+            error={false}
             helperText=""
           />
-          acc dropdown
+          <AccountDropDown
+            label="Bank Account"
+            newTxn={newTxn}
+            name="account"
+            onInputChange={onInputChange}
+          />
         </>
       }
       <TextField
@@ -30,9 +71,10 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
         name="amount"
         value={newTxn.amount}
         onChange={onInputChange}
-        error={false}
         fullWidth
-        sx={{ marginTop: 2 }}
+        required
+        sx={{ my: 1.25 }}
+        error={false}
         helperText=""
       />
       <TextField
@@ -41,18 +83,54 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
         name="description"
         value={newTxn.description}
         onChange={onInputChange}
-        error={false}
         fullWidth
-        sx={{ marginTop: 2 }}
+        sx={{ my: 1.25 }}
+        error={false}
         helperText=""
       />
       {newTxn.type === 2
         &&
         <>
-          "from and to acc dropdowns"
+          <AccountDropDown
+            label="From"
+            newTxn={newTxn}
+            name="fromAcc"
+            onInputChange={onInputChange}
+          />
+          <AccountDropDown
+            label="To"
+            newTxn={newTxn}
+            name="toAcc"
+            onInputChange={onInputChange}
+          />
         </>
       }
     </Box>
+  )
+}
+
+const AccountDropDown = ({ label, newTxn, name, onInputChange }) => {
+  return (
+    <FormControl fullWidth required sx={{ my: 1.25 }}>
+      <InputLabel id="demo-simple-select-helper-label">{label}</InputLabel>
+      <Select
+        id="demo-simple-select-helper"
+        labelId="demo-simple-select-helper-label"
+        label={label}
+        name={name}
+        value={newTxn[name]}
+        onChange={onInputChange}
+        // onChange={(e) => setNewTxn({ ...newTxn, [name]: e.target.value })}
+        fullWidth
+        error={false}
+        renderValue={(val) => val.name}
+      >
+        {allAccounts.map((val) => (
+          <MenuItem key={val.id} value={val} >{val.name}</MenuItem>
+        ))}
+      </Select>
+      {<FormHelperText></FormHelperText>}
+    </FormControl>
   )
 }
 
