@@ -7,6 +7,9 @@ import {
   InputLabel,
   FormHelperText
 } from "@mui/material";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Unstable_DateField as DateField } from '@mui/x-date-pickers/DateField';
 import { v4 as uuidv4 } from 'uuid';
 
 const allAccounts = [
@@ -42,52 +45,48 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
   }
   return (
     <Box sx={{ padding: "1em 0.5em" }}>
-      {newTxn.type !== 2
-        &&
-        <>
-          <TextField
-            id="outlined-error-helper-text"
-            label={newTxn.type === 1 ? "Payee" : "Payer"}
-            name={newTxn.type === 1 ? "payee" : "payer"}
-            value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
-            onChange={onInputChange}
-            fullWidth
-            required
-            sx={{ my: 1.25 }}
-            error={false}
-            helperText=""
-          />
-          <AccountDropDown
-            label="Bank Account"
-            newTxn={newTxn}
-            name="account"
-            onInputChange={onInputChange}
-          />
-        </>
-      }
-      <TextField
+      {newTxn.type !== 2 && <TextField
         id="outlined-error-helper-text"
-        label="Amount"
-        name="amount"
-        value={newTxn.amount}
+        label={newTxn.type === 1 ? "To / Payee" : "From / Payer"}
+        name={newTxn.type === 1 ? "payee" : "payer"}
+        value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
         onChange={onInputChange}
         fullWidth
         required
         sx={{ my: 1.25 }}
         error={false}
         helperText=""
-      />
-      <TextField
-        id="outlined-error-helper-text"
-        label="Description"
-        name="description"
-        value={newTxn.description}
-        onChange={onInputChange}
-        fullWidth
-        sx={{ my: 1.25 }}
-        error={false}
-        helperText=""
-      />
+      />}
+      {newTxn.type !== 2 && <AccountDropDown
+        label="Bank Account"
+        newTxn={newTxn}
+        name="account"
+        onInputChange={onInputChange}
+      />}
+      <div>
+        <TextField
+          id="outlined-error-helper-text"
+          label="Amount"
+          name="amount"
+          value={newTxn.amount}
+          onChange={onInputChange}
+          required
+          fullWidth
+          sx={{ my: 1.25 }}
+          error={false}
+          helperText=""
+        />
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateField
+            label="Date"
+            fullWidth
+            sx={{ my: 1.25 }}
+            value={newTxn.dateTime}
+            onChange={onInputChange}
+            format="LL"
+          />
+        </LocalizationProvider>
+      </div>
       {newTxn.type === 2
         &&
         <>
@@ -105,6 +104,17 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
           />
         </>
       }
+      <TextField
+        id="outlined-error-helper-text"
+        label="Description"
+        name="description"
+        value={newTxn.description}
+        onChange={onInputChange}
+        fullWidth
+        sx={{ my: 1.25 }}
+        error={false}
+        helperText=""
+      />
     </Box>
   )
 }

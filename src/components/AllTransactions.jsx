@@ -65,14 +65,14 @@ const emptyTxn = {
   id: '',
   type: 1,
   description: '',
-  amount: 0,
+  amount: '',
   payee: '',//1
   payer: '',//3
   account: '', // { id: '', name: '' }, 1 & 3
   fromAcc: '', // { id: '', name: '' }, 2
   toAcc: '', // { id: '', name: '' }, 2
-  tags: [{ id: '', value: '' }],
-  dateTime: '',
+  tags: '', //[{ id: '', value: '' }],
+  dateTime: Date(),
   createdAt: '',
   updatedAt: ''
 };
