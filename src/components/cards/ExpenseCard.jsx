@@ -46,11 +46,11 @@ const ExpenseCard = ({ data }) => {
         <Typography component="div" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography component="div" sx={{ maxWidth: "50%" }}>
             {data.tags.map((val) => (
-              <Chip key={val.id} label={val.value} color={isIncome ? "success" : "primary"} size="small" sx={expensIncomeChipStyles} />
+              <Chip key={val.id} label={val.name} color={isIncome ? "success" : "primary"} size="small" sx={expensIncomeChipStyles} />
             ))}
           </Typography>
           <Typography sx={{ fontSize: 12, textAlign: "right" }} color="text.secondary" variant="div" component="div">
-            {getFormattedDate(data.createdAt)}
+            {getFormattedDate(data.dateTime)}
           </Typography>
         </Typography>
       </CardContent>
