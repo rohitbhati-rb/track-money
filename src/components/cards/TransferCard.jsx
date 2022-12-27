@@ -34,11 +34,11 @@ const TransferCard = ({ data }) => {
         <Typography component="div" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography component="div" sx={{ maxWidth: "50%" }}>
             {data.tags.map((val) => (
-              <Chip key={val.id} label={val.value} size="small" sx={{ background: "#40c4ff", color: "black", marginRight: 1, fontWeight: "bold", fontSize: 10 }} />
+              <Chip key={val.id} label={val.name} size="small" sx={{ background: "#40c4ff", color: "black", marginRight: 1, fontWeight: "bold", fontSize: 10 }} />
             ))}
           </Typography>
           <Typography sx={{ fontSize: 12, textAlign: "right" }} color="text.secondary" variant="div" component="div">
-            {getFormattedDate(data.createdAt)}
+            {getFormattedDate(data.dateTime)}
           </Typography>
         </Typography>
       </CardContent>

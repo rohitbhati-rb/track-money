@@ -23,7 +23,8 @@ const allTransactions = [
     description: "Bought 5 pizzas for saturday night and my birthday",
     amount: 785,
     account: { id: uuidv4(), name: "Paytm Wallet" },
-    tags: [{ id: uuidv4(), value: "food" }, { id: uuidv4(), value: "party" }],
+    tags: [{ id: uuidv4(), name: "food" }, { id: uuidv4(), name: "party" }],
+    dateTime: Date(),
     createdAt: Date(),
     updatedAt: Date()
   },
@@ -34,7 +35,8 @@ const allTransactions = [
     description: "Bought airdopes for dad",
     amount: 1499,
     account: { id: uuidv4(), name: "SBI" },
-    tags: [{ id: uuidv4(), value: "electronics" }, { id: uuidv4(), value: "gift" }],
+    tags: [{ id: uuidv4(), name: "electronics" }, { id: uuidv4(), name: "gift" }],
+    dateTime: Date(),
     createdAt: Date(),
     updatedAt: Date()
   },
@@ -45,7 +47,8 @@ const allTransactions = [
     amount: 50000,
     account: { id: uuidv4(), name: "HDFC" },
     description: "monthly salary",
-    tags: [{ id: uuidv4(), value: "income" }],
+    tags: [{ id: uuidv4(), name: "income" }],
+    dateTime: Date(),
     createdAt: Date(),
     updatedAt: Date()
   },
@@ -56,7 +59,8 @@ const allTransactions = [
     amount: 4500,
     fromAcc: { id: uuidv4(), name: "SBI" },
     toAcc: { id: uuidv4(), name: "HDFC" },
-    tags: [{ id: uuidv4(), value: "transfer" }],
+    tags: [{ id: uuidv4(), name: "transfer" }],
+    dateTime: Date(),
     createdAt: Date(),
     updatedAt: Date()
   }
@@ -71,7 +75,7 @@ const emptyTxn = {
   account: '', // { id: '', name: '' }, 1 & 3
   fromAcc: '', // { id: '', name: '' }, 2
   toAcc: '', // { id: '', name: '' }, 2
-  tags: '', //[{ id: '', value: '' }],
+  tags: [], //[{ id: '', name: '' }],
   dateTime: Date(),
   createdAt: '',
   updatedAt: ''

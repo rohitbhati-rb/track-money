@@ -5,13 +5,34 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormHelperText
+  FormHelperText,
+  Chip,
+  OutlinedInput
 } from "@mui/material";
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import useTheme from "@mui/material/styles/useTheme";
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { Unstable_DateField as DateField } from '@mui/x-date-pickers/DateField';
+// import { Unstable_DateField as DateField } from '@mui/x-date-pickers/DateField';
 import { v4 as uuidv4 } from 'uuid';
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 const allAccounts = [
   {
     id: uuidv4(),
@@ -38,11 +59,36 @@ const allAccounts = [
     createdAt: Date()
   }
 ];
+const allTags = [
+  {
+    id: uuidv4(),
+    name: "food"
+  },
+  {
+    id: uuidv4(),
+    name: "travel"
+  },
+  {
+    id: uuidv4(),
+    name: "rent"
+  },
+  {
+    id: uuidv4(),
+    name: "shopping"
+  },
+];
 const TxnForm = ({ newTxn, setNewTxn }) => {
+  const theme = useTheme();
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewTxn((prev) => ({ ...prev, [name]: value }))
   }
+  const onTagsChange = (event) => {
+    const { target: { value }, } = event;
+    setNewTxn(
+      (prev) => ({ ...prev, tags: typeof value === 'string' ? value.split(',') : value })
+    );
+  };
   return (
     <Box sx={{ padding: "1em 0.5em" }}>
       {newTxn.type !== 2 && <TextField
@@ -77,13 +123,12 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
           helperText=""
         />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DateField
+          <DatePicker
             label="Date"
-            fullWidth
-            sx={{ my: 1.25 }}
+            name="dateTime"
             value={newTxn.dateTime}
-            onChange={onInputChange}
-            format="LL"
+            onChange={(v) => setNewTxn((prev) => ({ ...prev, dateTime: v }))}
+            renderInput={(params) => <TextField {...params} sx={{ my: 1.25 }} fullWidth />}
           />
         </LocalizationProvider>
       </div>
@@ -104,6 +149,35 @@ const TxnForm = ({ newTxn, setNewTxn }) => {
           />
         </>
       }
+      <FormControl sx={{ my: 1.25, width: "100%" }}>
+        <InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
+        <Select
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
+          value={newTxn.tags}
+          onChange={onTagsChange}
+          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value.id} label={value.name} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {allTags.map((val) => (
+            <MenuItem
+              key={val.id}
+              value={val}
+              style={getStyles(val, newTxn.tags, theme)}
+            >
+              {val.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <TextField
         id="outlined-error-helper-text"
         label="Description"
