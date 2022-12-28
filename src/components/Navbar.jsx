@@ -1,36 +1,50 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { styled, Switch } from '@mui/material';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  styled,
+  Switch,
+  Toolbar,
+  Tooltip,
+  Typography
+} from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-const navButtons = ["All Transactions", "Manage Accounts", "Reports"];
+import {
+  APP_NAME,
+  COMMON_NAVBAR_SETTINGS,
+  NAV_BUTTONS,
+  ROUTES,
+  SETTINGS
+} from '../constants';
+
+const originObject = {
+  vertical: 'top',
+  horizontal: 'right',
+}
 
 const Navbar = (props) => {
+  let navigate = useNavigate();
+  let location = useLocation();
+
   const { isDarkTheme, changeTheme } = props;
   const [anchorElUser, setAnchorElUser] = useState(null);
 
-  let navigate = useNavigate();
-  let location = useLocation();
-  let navValue = location?.pathname === '/transactions' ? 0 : location?.pathname === '/accounts' ? 1 : location?.pathname === '/reports' ? 2 : 3;
+  let navValue = location?.pathname === ROUTES[0] ? 0 : location?.pathname === ROUTES[1] ? 1 : location?.pathname === ROUTES[2] ? 2 : 3;
   const [value, setValue] = useState(navValue);
-  const routes = ["/transactions", "/accounts", "/reports"];
+
   useEffect(() => {
-    if (location?.pathname === '/transactions') {
+    if (location?.pathname === ROUTES[0]) {
       setValue(0)
-    } else if (location?.pathname === '/accounts') {
+    } else if (location?.pathname === ROUTES[1]) {
       setValue(1)
-    } else if (location?.pathname === '/reports') {
+    } else if (location?.pathname === ROUTES[2]) {
       setValue(2)
     }
   }, [location])
@@ -40,7 +54,7 @@ const Navbar = (props) => {
   };
 
   const handleNavClick = (val) => {
-    navigate(routes[val], { replace: false });
+    navigate(ROUTES[val], { replace: false });
   };
 
   const handleCloseUserMenu = () => {
@@ -55,41 +69,33 @@ const Navbar = (props) => {
             variant="h5"
             noWrap
             component="a"
-            onClick={() => navigate("/transactions", { replace: false })}
+            onClick={() => navigate(ROUTES[0], { replace: false })}
             sx={{
-              mr: 2,
+              ...COMMON_NAVBAR_SETTINGS,
               display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
               fontSize: 32,
-              color: 'inherit',
-              textDecoration: 'none',
               cursor: "pointer"
             }}
           >
-            t₹ack money
+            {APP_NAME}
           </Typography>
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="/transactions"
+            href={ROUTES[0]}
             sx={{
-              mr: 2,
+              ...COMMON_NAVBAR_SETTINGS,
               ml: 0.5,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
               fontSize: 26,
-              color: 'inherit',
-              textDecoration: 'none',
             }}
           >
-            t₹ack money
+            {APP_NAME}
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {navButtons.map((val, idx) => (
+            {NAV_BUTTONS.map((val, idx) => (
               <Button
                 key={idx}
                 onClick={() => handleNavClick(idx)}
@@ -106,9 +112,8 @@ const Navbar = (props) => {
               </Button>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title="Open SETTINGS">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
@@ -117,19 +122,13 @@ const Navbar = (props) => {
               sx={{ mt: '45px' }}
               id="menu-appbar"
               anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
+              anchorOrigin={originObject}
               keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
+              transformOrigin={originObject}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {SETTINGS.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
@@ -144,9 +143,6 @@ const Navbar = (props) => {
     </AppBar>
   );
 };
-
-
-
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -194,4 +190,5 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     borderRadius: 20 / 2,
   },
 }));
+
 export default Navbar;

@@ -1,5 +1,5 @@
 import { Card, CardContent, Chip, Typography } from "@mui/material";
-import { getFormattedDate } from "../helpers";
+import { getFormattedDate } from "../../helpers";
 
 const ExpenseCard = ({ data }) => {
   const isIncome = data.type === 3;

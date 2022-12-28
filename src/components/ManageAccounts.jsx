@@ -11,7 +11,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
-import { getFormattedDate } from './helpers';
+import { getFormattedDate } from '../helpers';
 
 const allAccounts = [
   {

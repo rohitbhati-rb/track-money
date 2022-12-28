@@ -1,6 +1,6 @@
 import { Card, CardContent, Chip, Typography } from "@mui/material";
 import EastIcon from '@mui/icons-material/East';
-import { getFormattedDate } from "../helpers";
+import { getFormattedDate } from "../../helpers";
 
 const TransferCard = ({ data }) => {
   return (
