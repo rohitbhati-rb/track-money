@@ -5,81 +5,16 @@ import {
   Container,
   Typography
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
+import { allTransactions, emptyTxn } from '../appState';
+import { ADD_TRANSACTION, MY_TRANSACTIONS } from '../constants';
 
 // transaction types
 // 1 -> Expense
 // 2 -> Transfer
 // 3 -> Income
-
-const allTransactions = [
-  {
-    id: uuidv4(),
-    type: 1,
-    payee: "Dominos Pizza",
-    description: "Bought 5 pizzas for saturday night and my birthday",
-    amount: 785,
-    account: { id: uuidv4(), name: "Paytm Wallet" },
-    tags: [{ id: uuidv4(), name: "food" }, { id: uuidv4(), name: "party" }],
-    dateTime: Date(),
-    createdAt: Date(),
-    updatedAt: Date()
-  },
-  {
-    id: uuidv4(),
-    type: 1,
-    payee: "boat Headphones",
-    description: "Bought airdopes for dad",
-    amount: 1499,
-    account: { id: uuidv4(), name: "SBI" },
-    tags: [{ id: uuidv4(), name: "electronics" }, { id: uuidv4(), name: "gift" }],
-    dateTime: Date(),
-    createdAt: Date(),
-    updatedAt: Date()
-  },
-  {
-    id: uuidv4(),
-    type: 3,
-    payer: "Deloitte",
-    amount: 50000,
-    account: { id: uuidv4(), name: "HDFC" },
-    description: "monthly salary",
-    tags: [{ id: uuidv4(), name: "income" }],
-    dateTime: Date(),
-    createdAt: Date(),
-    updatedAt: Date()
-  },
-  {
-    id: uuidv4(),
-    type: 2,
-    description: "transfer to hdfc",
-    amount: 4500,
-    fromAcc: { id: uuidv4(), name: "SBI" },
-    toAcc: { id: uuidv4(), name: "HDFC" },
-    tags: [{ id: uuidv4(), name: "transfer" }],
-    dateTime: Date(),
-    createdAt: Date(),
-    updatedAt: Date()
-  }
-];
-const emptyTxn = {
-  id: '',
-  type: 1,
-  description: '',
-  amount: '',
-  payee: '',//1
-  payer: '',//3
-  account: '', // { id: '', name: '' }, 1 & 3
-  fromAcc: '', // { id: '', name: '' }, 2
-  toAcc: '', // { id: '', name: '' }, 2
-  tags: [], //[{ id: '', name: '' }],
-  dateTime: Date(),
-  createdAt: '',
-  updatedAt: ''
-};
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState(allTransactions);
@@ -95,17 +30,15 @@ const Transactions = () => {
   const addNewTxn = () => {
     const txns = transactions;
     txns.push(newTxn)
-    console.log(newTxn)
     setTransactions(txns)
     setNewTxn(emptyTxn)
-    console.log(newTxn)
   }
 
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h5" gutterBottom component="div" sx={{ marginBottom: 2 }}>
-          My Transactions
+          {MY_TRANSACTIONS}
         </Typography>
         <Button
           size='small'
@@ -113,7 +46,7 @@ const Transactions = () => {
           sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
           onClick={OpenTxnDialog}
         >
-          Add Transaction
+          {ADD_TRANSACTION}
         </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>

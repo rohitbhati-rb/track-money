@@ -8,38 +8,11 @@ import {
   Container,
   Typography
 } from '@mui/material';
-import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-
-const allAccounts = [
-  {
-    id: uuidv4(),
-    name: "SBI",
-    balance: 111523,
-    createdAt: Date()
-  },
-  {
-    id: uuidv4(),
-    name: "HDFC",
-    balance: 99923,
-    createdAt: Date()
-  },
-  {
-    id: uuidv4(),
-    name: "ICICI",
-    balance: 14523,
-    createdAt: Date()
-  },
-  {
-    id: uuidv4(),
-    name: "Paytm Wallet",
-    balance: 523,
-    createdAt: Date()
-  }
-];
-const emptyAccount = { id: '', name: '', balance: '', createdAt: '' };
+import { allAccounts, emptyAccount } from '../appState';
+import { ADD_ACCOUNT, MY_ACCOUNTS } from '../constants';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
@@ -90,7 +63,7 @@ const ManageAccounts = () => {
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
         <Typography variant="h5" gutterBottom component="div" sx={{ marginBottom: 2 }}>
-          My Accounts
+          {MY_ACCOUNTS}
         </Typography>
         <Button
           size='small'
@@ -98,7 +71,7 @@ const ManageAccounts = () => {
           sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
           onClick={() => OpenAccDialog(null)}
         >
-          Add Account
+          {ADD_ACCOUNT}
         </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
