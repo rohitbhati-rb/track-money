@@ -30,3 +30,20 @@ export const TxnTagsMenuProps = {
     },
   },
 };
+
+// Cards constants
+export const COMMON_CARD_CSS = {
+  margin: "15px 0",
+  display: "flex",
+  justifyContent: "space-between",
+  borderLeft: "3px solid",
+  borderWidth: { sm: "5px" },
+  borderColor: "#40c4ff",
+};
+export const COMMON_CARD_CHIP_CSS = {
+  background: "#40c4ff",
+  color: "black",
+  marginRight: 1,
+  fontWeight: "bold",
+  fontSize: 10
+}

@@ -1,19 +1,12 @@
 import { Card, CardContent, Chip, Typography } from "@mui/material";
 import EastIcon from '@mui/icons-material/East';
+
 import { getFormattedDate } from "../../helpers";
+import { COMMON_CARD_CHIP_CSS, COMMON_CARD_CSS } from "../../constants";
 
 const TransferCard = ({ data }) => {
   return (
-    <Card
-      sx={{
-        margin: "15px 0",
-        display: "flex",
-        justifyContent: "space-between",
-        borderLeft: "3px solid",
-        borderWidth: { sm: "5px" },
-        borderColor: "#40c4ff"
-      }}
-    >
+    <Card sx={COMMON_CARD_CSS}>
       <CardContent sx={{
         height: "100%", width: "100%", padding: "4px 14px",
         "&:last-child": {
@@ -34,7 +27,7 @@ const TransferCard = ({ data }) => {
         <Typography component="div" sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Typography component="div" sx={{ maxWidth: "50%" }}>
             {data.tags.map((val) => (
-              <Chip key={val.id} label={val.name} size="small" sx={{ background: "#40c4ff", color: "black", marginRight: 1, fontWeight: "bold", fontSize: 10 }} />
+              <Chip key={val.id} label={val.name} size="small" sx={COMMON_CARD_CHIP_CSS} />
             ))}
           </Typography>
           <Typography sx={{ fontSize: 12, textAlign: "right" }} color="text.secondary" variant="div" component="div">
