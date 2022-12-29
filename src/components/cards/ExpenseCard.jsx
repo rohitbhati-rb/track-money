@@ -1,23 +1,18 @@
 import { Card, CardContent, Chip, Typography } from "@mui/material";
-import { getFormattedDate } from "../helpers";
+
+import { COMMON_CARD_CHIP_CSS, COMMON_CARD_CSS } from "../../constants";
+import { getFormattedDate } from "../../helpers";
 
 const ExpenseCard = ({ data }) => {
   const isIncome = data.type === 3;
   const expensIncomeChipStyles = {
-    background: isIncome ? "#b9f6ca" : "#ff8a80",
-    color: "black",
-    marginRight: 1,
-    fontWeight: "bold",
-    fontSize: 10
+    ...COMMON_CARD_CHIP_CSS,
+    background: isIncome ? "#b9f6ca" : "#ff8a80"
   }
   return (
     <Card
       sx={{
-        margin: "15px 0",
-        display: "flex",
-        justifyContent: "space-between",
-        borderLeft: "3px solid",
-        borderWidth: { sm: "5px" },
+        ...COMMON_CARD_CSS,
         borderColor: isIncome ? "#00e676" : "#ff5252"
       }}
     >
