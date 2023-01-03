@@ -7,19 +7,22 @@ import {
   DialogTitle, Tab, Tabs, Box
 } from '@mui/material';
 import TxnForm from './TxnForm';
-import { TxnTabs } from '../../constants';
+import { ADD_TRANSACTION, TxnTabs } from '../../constants';
 import { TxnTabProps } from '../../helpers';
+import { emptyTxn } from '../../appState';
 
-const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn }) => {
+const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, txnError, setTxnError }) => {
   const [txnTabValue, setTxnTabValue] = useState(0);
   const txnTabValueChange = (e, val) => {
     setTxnTabValue(val);
-    setNewTxn((prev) => ({ ...prev, type: val + 1 }))
+    setNewTxn(({ ...emptyTxn, type: val + 1 }))
   };
   const handleAddTxn = () => {
     addNewTxn()
     handleClose()
-  }
+  };
+  const checkTxnForm = !(txnError.amount === "" && txnError.payee === "" && txnError.payer === "" && txnError.tags === "");
+  // form touched remaining
   return (
     <Dialog
       open={open}
@@ -27,7 +30,7 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn }) 
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
-        Add Transaction
+        {ADD_TRANSACTION}
       </DialogTitle>
       <DialogContent sx={{ padding: "5 1", width: "100%" }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -40,11 +43,22 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn }) 
         <TxnForm
           newTxn={newTxn}
           setNewTxn={setNewTxn}
+          txnError={txnError}
+          setTxnError={setTxnError}
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleAddTxn}>Add</Button>
+        <Button
+          onClick={handleClose}
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleAddTxn}
+          disabled={checkTxnForm}
+        >
+          Add
+        </Button>
       </DialogActions>
     </Dialog>
   );
