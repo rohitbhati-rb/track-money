@@ -18,10 +18,10 @@ export const emptyTxn = {
 };
 // const errObj = { errorState: false, errorText: "" };
 export const txnErrorState = {
-  amount: "",
-  payee: "",
-  payer: "",
-  tags: ""
+  amount: false,
+  payee: false,
+  payer: false,
+  tags: false
 };
 export const allAccounts = [
   {

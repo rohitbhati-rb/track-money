@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import TxnForm from './TxnForm';
 import { ADD_TRANSACTION, TxnTabs } from '../../constants';
-import { TxnTabProps } from '../../helpers';
+import { TxnTabProps, validateTxnForm } from '../../helpers';
 import { emptyTxn } from '../../appState';
 
 const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, txnError, setTxnError }) => {
@@ -18,11 +18,12 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
     setNewTxn(({ ...emptyTxn, type: val + 1 }))
   };
   const handleAddTxn = () => {
-    addNewTxn()
-    handleClose()
+    if (validateTxnForm(txnError)) {
+      addNewTxn()
+      setTxnTabValue(0)
+      handleClose()
+    }
   };
-  const checkTxnForm = !(txnError.amount === "" && txnError.payee === "" && txnError.payer === "" && txnError.tags === "");
-  // form touched remaining
   return (
     <Dialog
       open={open}
@@ -55,7 +56,6 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
         </Button>
         <Button
           onClick={handleAddTxn}
-          disabled={checkTxnForm}
         >
           Add
         </Button>
