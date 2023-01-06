@@ -16,12 +16,15 @@ export const emptyTxn = {
   createdAt: '',
   updatedAt: ''
 };
-// const errObj = { errorState: false, errorText: "" };
+export const emptyErrObj = { err: false, msg: "" };
 export const txnErrorState = {
-  amount: false,
-  payee: false,
-  payer: false,
-  tags: false
+  amount: emptyErrObj,
+  account: emptyErrObj,
+  fromAcc: emptyErrObj,
+  toAcc: emptyErrObj,
+  payee: emptyErrObj,
+  payer: emptyErrObj,
+  tags: emptyErrObj
 };
 export const allAccounts = [
   {

@@ -39,8 +39,8 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError }) => {
           value={newTxn.amount}
           type="tel"
           sx={{ my: 1.25 }}
-          error={txnError.amount ? true : false}
-          helperText={txnError.amount}
+          error={txnError.amount.err}
+          helperText={txnError.amount.msg}
         />
         {newTxn.type !== 2 && <AccountDropDown
           label="Bank Account"
@@ -54,8 +54,8 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError }) => {
           value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
           sx={{ my: 1.25 }}
           required={newTxn.tags.length === 0}
-          error={newTxn.type === 1 && txnError.payee ? true : txnError.payer ? true : false}
-          helperText={newTxn.type === 1 ? txnError.payee : txnError.payer}
+          error={txnError.payee.err || txnError.payer.err}
+          helperText={newTxn.type === 1 ? txnError.payee.msg : txnError.payer.msg}
         />}
         {newTxn.type === 2
           &&
@@ -82,7 +82,7 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError }) => {
             multiple
             value={newTxn.tags}
             onChange={onTagsChange}
-            error={txnError.tags ? true : false}
+            error={txnError.tags.err}
             input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
             renderValue={(selected) => (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -103,15 +103,17 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError }) => {
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>{txnError.tags}</FormHelperText>
+          <FormHelperText sx={{ color: "red" }}>{txnError.tags.msg}</FormHelperText>
         </FormControl>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label="Date"
             name="dateTime"
             value={newTxn.dateTime}
+            inputFormat="DD/MM/YYYY"
             onChange={(v) => setNewTxn((prev) => ({ ...prev, dateTime: v }))}
             renderInput={(params) => <TextField {...params} sx={{ my: 1.25 }} fullWidth />}
+          // renderInput={(params) => {params.inputProps.value = getFormattedDate(params.inputProps.value); return <TextField {...params} sx={{ my: 1.25 }} fullWidth />}}
           />
         </LocalizationProvider>
         <TextField

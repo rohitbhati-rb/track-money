@@ -9,13 +9,14 @@ import {
 import TxnForm from './TxnForm';
 import { ADD_TRANSACTION, TxnTabs } from '../../constants';
 import { TxnTabProps, validateTxnForm } from '../../helpers';
-import { emptyTxn } from '../../appState';
+import { emptyTxn, txnErrorState as emptyTxnError } from '../../appState';
 
 const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, txnError, setTxnError }) => {
   const [txnTabValue, setTxnTabValue] = useState(0);
   const txnTabValueChange = (e, val) => {
     setTxnTabValue(val);
     setNewTxn(({ ...emptyTxn, type: val + 1 }))
+    setTxnError(emptyTxnError)
   };
   const handleAddTxn = () => {
     if (validateTxnForm(txnError)) {
@@ -56,6 +57,7 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
         </Button>
         <Button
           onClick={handleAddTxn}
+          type="submit"
         >
           Add
         </Button>
