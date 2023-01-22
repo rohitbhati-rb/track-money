@@ -18,13 +18,13 @@ export const emptyTxn = {
 };
 export const emptyErrObj = { err: false, msg: "" };
 export const txnErrorState = {
-  amount: emptyErrObj,
-  account: emptyErrObj,
-  fromAcc: emptyErrObj,
-  toAcc: emptyErrObj,
-  payee: emptyErrObj,
-  payer: emptyErrObj,
-  tags: emptyErrObj
+  amount: "",
+  account: "",
+  fromAcc: "",
+  toAcc: "",
+  payee: "",
+  payer: "",
+  tags: ""
 };
 export const allAccounts = [
   {
