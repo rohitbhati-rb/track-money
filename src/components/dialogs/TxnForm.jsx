@@ -54,57 +54,64 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
     let fieldErrors = txnError;
     switch (name) {
       case "amount":
-        if (isNaN(Number(value)))
-          fieldErrors[name] = "Amount must be a number"
-        else if (Number(value) <= 0)
-          fieldErrors[name] = "Amount must be greater than 0"
+        if (Number(value) > 0)
+          fieldErrors.amount = ""
         else
-          fieldErrors[name] = ""
+          fieldErrors.amount = "Amount must be non-zero number"
         break;
-      case "payee" || "payer":
-        let msgPrefix = name === "payee" ? "Payee" : "Payer"
-        if (value !== "" && !isNaN(Number(value)))
-          fieldErrors[name] = msgPrefix + " can't be a number"
-        else if (value === "" && newTxn.tags.length === 0)
-          fieldErrors[name] = msgPrefix + " and Tags both can't be empty"
-        else if (isNaN(value) && newTxn.tags.length === 0) { fieldErrors[name] = ""; fieldErrors.tags = ""; }
-        else
-          fieldErrors[name] = ""
+      case "payee":
+        if (value === "" && newTxn.tags.length === 0)
+          fieldErrors.payee = "Payee and Tags both can't be empty"
+        else if (value !== "" && !value.match(/^[a-zA-Z0-9_ ]+$/))
+          fieldErrors.payee = "Payee is invalid"
+        else {
+          fieldErrors.payee = ""; fieldErrors.tags = "";
+        }
+        break;
+      case "payer":
+        if (value === "" && newTxn.tags.length === 0)
+          fieldErrors.payer = "Payer and Tags both can't be empty"
+        else if (value !== "" && !value.match(/^[a-zA-Z0-9_ ]+$/))
+          fieldErrors.payer = "Payer is invalid"
+        else {
+          fieldErrors.payer = ""; fieldErrors.tags = "";
+        }
         break;
       case "tags":
-        if (value.length === 0) {
-          if (newTxn.type === 1 && newTxn.payee === "")
-            fieldErrors.tags = "Payee and Tags both can't be empty"
-          else if (newTxn.type === 3 && newTxn.payer === "")
-            fieldErrors.tags = "Payer and Tags both can't be empty"
-          else { fieldErrors.tags = ""; fieldErrors.payee = ""; fieldErrors.payer = "" }
-        } else { fieldErrors.tags = ""; fieldErrors.payee = ""; fieldErrors.payer = "" }
+        if (newTxn.type !== 2) {
+          let msgPrefix = newTxn.type === 1 ? "Payee" : "Payer"
+          if (value.length === 0 && newTxn.payee === "" && newTxn.payer === "")
+            fieldErrors.tags = "Tags and " + msgPrefix + " both can't be empty"
+          else if (newTxn.payee !== "" && !newTxn.payee.match(/^[a-zA-Z0-9_ ]+$/))
+            fieldErrors.payee = "Payee is invalid"
+          else if (newTxn.payer !== "" && !newTxn.payer.match(/^[a-zA-Z0-9_ ]+$/))
+            fieldErrors.payer = "Payer is invalid"
+          else {
+            fieldErrors.payee = ""; fieldErrors.payer = ""; fieldErrors.tags = "";
+          }
+        }
         break;
       default: break;
     }
     setTxnError((prev) => ({ ...prev, ...fieldErrors }))
-    validateTxnForm()
-  }
-  const validateTxnForm = () => {
     let isFormValid = false
     switch (newTxn.type) {
       case 1:
         isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payee)
-        isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payee
+        isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.account && !fieldErrors.tags && !fieldErrors.payee
         break
       case 2:
         isFormValid = newTxn.amount && newTxn.fromAcc && newTxn.toAcc
-        isFormValid = isFormValid && !txnError.amount && !txnError.fromAcc && !txnError.toAcc
+        isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.fromAcc && !fieldErrors.toAcc
         break
       case 3:
         isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payer)
-        isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payer
+        isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.account && !fieldErrors.tags && !fieldErrors.payer
         break
       default: break
     }
     setFormValid(isFormValid)
   }
-  // payer logic is breaking, tags is required anyways
   return (
     <Box sx={{ padding: "1em 0.5em" }}>
       <TextField
@@ -120,15 +127,6 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
         newTxn={newTxn}
         name="account"
         onInputChange={onInputChange}
-      />}
-      {newTxn.type !== 2 && <TextField
-        {...TxnFormProps(`${newTxn.type === 1 ? "payee" : "payer"}`, onInputChange, "", false)}
-        label={newTxn.type === 1 ? "To / Payee" : "From / Payer"}
-        value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
-        sx={{ my: 1.25 }}
-        required={newTxn.tags.length === 0}
-        error={txnError.payee !== "" || txnError.payer !== ""}
-        helperText={newTxn.type === 1 ? txnError.payee : txnError.payer}
       />}
       {newTxn.type === 2
         &&
@@ -178,6 +176,15 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
         </Select>
         <FormHelperText sx={{ color: "red" }}>{txnError.tags}</FormHelperText>
       </FormControl>
+      {newTxn.type !== 2 && <TextField
+        {...TxnFormProps(`${newTxn.type === 1 ? "payee" : "payer"}`, onInputChange, "", false)}
+        label={newTxn.type === 1 ? "To / Payee" : "From / Payer"}
+        value={newTxn.type === 1 ? newTxn.payee : newTxn.payer}
+        sx={{ my: 1.25 }}
+        required={newTxn.tags.length === 0}
+        error={txnError.payee !== "" || txnError.payer !== ""}
+        helperText={newTxn.type === 1 ? txnError.payee : txnError.payer}
+      />}
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Date"
