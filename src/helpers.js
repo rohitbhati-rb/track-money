@@ -1,6 +1,6 @@
 export const getFormattedDate = (s) => {
   let d = new Date(s);
-  return `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`;
+  return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 };
 
 export const TxnTabProps = (index) => {
