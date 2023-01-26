@@ -11,14 +11,15 @@ import {
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { allAccounts, emptyAccount } from '../appState';
+import { emptyAccount } from '../appState';
 import { ADD_ACCOUNT, MY_ACCOUNTS } from '../constants';
+import useLocalStorage from '../useLocalStorageState';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
   const [isEditAccount, setIsEditAccount] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
-  const [accounts, setAccounts] = useState(allAccounts);
+  const [accounts, setAccounts] = useLocalStorage("acc", [])
   const [newAccount, setNewAccount] = useState(emptyAccount);
 
   const OpenAccDialog = (acc) => {

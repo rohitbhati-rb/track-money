@@ -8,8 +8,9 @@ import {
 import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
-import { allTransactions, emptyTxn, txnErrorState } from '../appState';
+import { emptyTxn, txnErrorState } from '../appState';
 import { ADD_TRANSACTION, MY_TRANSACTIONS } from '../constants';
+import UseLocalStorageState from '../useLocalStorageState';
 
 // transaction types
 // 1 -> Expense
@@ -17,7 +18,7 @@ import { ADD_TRANSACTION, MY_TRANSACTIONS } from '../constants';
 // 3 -> Income
 
 const Transactions = () => {
-  const [transactions, setTransactions] = useState(allTransactions);
+  const [transactions, setTransactions] = UseLocalStorageState("txns", []);
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);
