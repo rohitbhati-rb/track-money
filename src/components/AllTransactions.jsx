@@ -8,7 +8,7 @@ import {
 import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
-import { allTransactions, emptyTxn } from '../appState';
+import { allTransactions, emptyTxn, txnErrorState } from '../appState';
 import { ADD_TRANSACTION, MY_TRANSACTIONS } from '../constants';
 
 // transaction types
@@ -20,18 +20,22 @@ const Transactions = () => {
   const [transactions, setTransactions] = useState(allTransactions);
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
+  const [txnError, setTxnError] = useState(txnErrorState);
 
   const OpenTxnDialog = () => {
     setTxnDialogOpen(true)
   }
   const CloseTxnDialog = () => {
     setTxnDialogOpen(false)
+    setNewTxn(emptyTxn)
+    setTxnError(txnErrorState)
   }
   const addNewTxn = () => {
     const txns = transactions;
     txns.push(newTxn)
     setTransactions(txns)
     setNewTxn(emptyTxn)
+    setTxnError(txnErrorState)
   }
 
   return (
@@ -65,6 +69,8 @@ const Transactions = () => {
           newTxn={newTxn}
           setNewTxn={setNewTxn}
           addNewTxn={addNewTxn}
+          txnError={txnError}
+          setTxnError={setTxnError}
         />
       </Box>
     </Container>
