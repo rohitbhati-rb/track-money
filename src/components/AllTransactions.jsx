@@ -8,8 +8,9 @@ import {
 import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
-import { ADD_TRANSACTION, MY_TRANSACTIONS,emptyTxn, txnErrorState, TRANSACTIONS_KEY } from '../constants';
-import {useLocalStorage} from '../hooks';
+import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../constants';
+import { useLocalStorage } from '../hooks';
+import { UpdateAccountBalance } from '../txn';
 
 // transaction types
 // 1 -> Expense
@@ -18,6 +19,7 @@ import {useLocalStorage} from '../hooks';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
+  const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);
@@ -33,9 +35,13 @@ const Transactions = () => {
   const addNewTxn = () => {
     const txns = transactions;
     txns.push(newTxn)
-    setTransactions(txns)
-    setNewTxn(emptyTxn)
-    setTxnError(txnErrorState)
+    if (UpdateAccountBalance(accounts, setAccounts, newTxn)) {
+      setTransactions(txns)
+      setNewTxn(emptyTxn)
+      setTxnError(txnErrorState)
+    } else {
+      console.log("Error: Unable to add transaction")
+    }
   }
 
   return (
