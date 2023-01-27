@@ -13,12 +13,14 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import useTheme from "@mui/material/styles/useTheme";
 
-import { allAccounts, allTags } from "../../appState";
-import { TxnTagsMenuProps } from "../../constants";
+import { allTags } from "../../appState";
+import { ACCOUNTS_KEY, TxnTagsMenuProps } from "../../constants";
 import { getTagStyles, TxnFormProps } from "../../helpers";
+import { useLocalStorageRead } from "../../hooks";
 
 const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => {
   const theme = useTheme();
+  const allAccounts = useLocalStorageRead(ACCOUNTS_KEY, [])
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewTxn((prev) => ({ ...prev, [name]: value }))
