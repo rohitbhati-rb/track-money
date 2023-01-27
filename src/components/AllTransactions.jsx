@@ -8,9 +8,8 @@ import {
 import TransactionDialog from './dialogs/TransactionDialog';
 import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
-import { emptyTxn, txnErrorState } from '../appState';
-import { ADD_TRANSACTION, MY_TRANSACTIONS } from '../constants';
-import UseLocalStorageState from '../useLocalStorageState';
+import { ADD_TRANSACTION, MY_TRANSACTIONS,emptyTxn, txnErrorState, TRANSACTIONS_KEY } from '../constants';
+import {useLocalStorage} from '../hooks';
 
 // transaction types
 // 1 -> Expense
@@ -18,7 +17,7 @@ import UseLocalStorageState from '../useLocalStorageState';
 // 3 -> Income
 
 const Transactions = () => {
-  const [transactions, setTransactions] = UseLocalStorageState("txns", []);
+  const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);

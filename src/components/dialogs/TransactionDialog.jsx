@@ -6,10 +6,15 @@ import {
   DialogContent,
   DialogTitle, Tab, Tabs, Box
 } from '@mui/material';
+
 import TxnForm from './TxnForm';
-import { ADD_TRANSACTION, TxnTabs } from '../../constants';
+import {
+  ADD_TRANSACTION,
+  TxnTabs,
+  emptyTxn,
+  txnErrorState as emptyTxnError
+} from '../../constants';
 import { TxnTabProps } from '../../helpers';
-import { emptyTxn, txnErrorState as emptyTxnError } from '../../appState';
 
 const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, txnError, setTxnError }) => {
   const [txnTabValue, setTxnTabValue] = useState(0);
@@ -76,19 +81,19 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
             setTxnError={setTxnError}
             setFormValid={setFormValid}
           />
-        <DialogActions>
-          <Button
-            onClick={handleCloseTxn}
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleAddTxn}
-            type="submit"
-          >
-            Add
-          </Button>
-        </DialogActions>
+          <DialogActions>
+            <Button
+              onClick={handleCloseTxn}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddTxn}
+              type="submit"
+            >
+              Add
+            </Button>
+          </DialogActions>
         </DialogContent>
       </form>
     </Dialog>

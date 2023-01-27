@@ -11,9 +11,8 @@ import {
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { emptyAccount } from '../appState';
-import { ADD_ACCOUNT, MY_ACCOUNTS } from '../constants';
-import useLocalStorage from '../useLocalStorageState';
+import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount } from '../constants';
+import {useLocalStorage} from '../hooks';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
