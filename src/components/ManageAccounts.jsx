@@ -11,14 +11,16 @@ import {
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, ACCOUNTS_KEY } from '../constants';
+import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
+import { UpdateTransactions } from '../txn';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
   const [isEditAccount, setIsEditAccount] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
+  const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [newAccount, setNewAccount] = useState(emptyAccount);
 
   const OpenAccDialog = (acc) => {
@@ -55,9 +57,8 @@ const ManageAccounts = () => {
     setNewAccount(emptyAccount);
     setIsEditAccount(false);
   }
-  const deleteAccount = (id) => {
-    const newAccounts = accounts.filter(acc => acc.id !== id)
-    setAccounts(newAccounts)
+  const deleteAccount = (accId) => {
+    UpdateTransactions(accounts, setAccounts, transactions, setTransactions, accId)
   }
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
