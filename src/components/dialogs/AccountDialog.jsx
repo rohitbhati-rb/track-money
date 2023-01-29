@@ -1,12 +1,15 @@
 import {
   Button,
+  Checkbox,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControlLabel,
   TextField
 } from "@mui/material";
 import { v4 as uuidv4 } from 'uuid';
+import { emptyErrObj } from "../../constants";
 import { TxnFormProps } from "../../helpers";
 
 
@@ -17,6 +20,21 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
     if (!isEditAccount)
       setNewAccount((prev) => ({ ...prev, id: uuidv4(), createdAt: Date() }))
     validateAccFormData(name, value)
+  }
+  const onCheckBoxChange = (e) => {
+    setNewAccount((prev) => ({
+      ...prev,
+      isCreditCard: e.target.checked,
+      openingBalance: '',
+      creditLimit: '',
+      creditBalance: ''
+    }))
+    setAccError((prev) => ({
+      ...prev,
+      creditLimit: emptyErrObj,
+      openingBalance: emptyErrObj,
+      creditBalance: emptyErrObj
+    }))
   }
   const handleAddAccount = () => {
     addAccount()
@@ -29,7 +47,19 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
         if (Number(value) > 0)
           fieldErrors.openingBalance = { err: false, msg: '' }
         else
-          fieldErrors.openingBalance = { err: true, msg: "Amount must be non-zero number" }
+          fieldErrors.openingBalance = { err: true, msg: "Amount must be a number" }
+        break;
+      case "creditLimit":
+        if (Number(value) > 0)
+          fieldErrors.creditLimit = { err: false, msg: '' }
+        else
+          fieldErrors.creditLimit = { err: true, msg: "Amount must be a number" }
+        break;
+      case "creditBalance":
+        if (Number(value) > 0)
+          fieldErrors.creditBalance = { err: false, msg: '' }
+        else
+          fieldErrors.creditBalance = { err: true, msg: "Amount must be a number" }
         break;
       case "name":
         if (value === "" || !value.match(/^[a-zA-Z0-9_ ]+$/))
@@ -42,9 +72,9 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
     setAccError((prev) => ({ ...prev, ...fieldErrors }))
   }
   let isFormValidated = accError.name.err !== null &&
-    accError.openingBalance.err !== null &&
+    (accError.openingBalance.err !== null || (accError.creditLimit.err !== null && accError.creditBalance.err !== null)) &&
     !accError.name.err &&
-    !accError.openingBalance.err
+    (!accError.openingBalance.err || (!accError.creditLimit.err !== null && !accError.creditBalance.err !== null))
   return (
     <Dialog
       open={open}
@@ -58,20 +88,55 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
         <TextField
           {...TxnFormProps("name", onInputChange)}
           value={newAccount.name}
-          sx={{ marginTop: 2 }}
+          sx={{ marginTop: 1 }}
           type="text"
           error={accError.name.err === null ? false : accError.name.err}
           helperText={accError.name.msg}
         />
-        <TextField
-          {...TxnFormProps("openingBalance", onInputChange)}
-          label="Opening Balance"
-          value={newAccount.openingBalance}
-          sx={{ marginTop: 2 }}
-          type="tel"
-          error={accError.openingBalance.err === null ? false : accError.openingBalance.err}
-          helperText={accError.openingBalance.msg}
+        <FormControlLabel
+          sx={{ marginTop: 1 }}
+          control={
+            <Checkbox
+              checked={newAccount.isCreditCard}
+              onChange={onCheckBoxChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+          }
+          label="Credit Card"
         />
+        {newAccount.isCreditCard ?
+          <TextField
+            {...TxnFormProps("creditLimit", onInputChange)}
+            label={"Credit Limit"}
+            value={newAccount.creditLimit}
+            sx={{ marginTop: 1 }}
+            type="tel"
+            error={accError.creditLimit.err === null ? false : accError.creditLimit.err}
+            helperText={accError.creditLimit.msg}
+          />
+          :
+          <TextField
+            {...TxnFormProps("openingBalance", onInputChange)}
+            label="Opening Balance"
+            value={newAccount.openingBalance}
+            sx={{ marginTop: 1 }}
+            type="tel"
+            error={accError.openingBalance.err === null ? false : accError.openingBalance.err}
+            helperText={accError.openingBalance.msg}
+          />}
+        {newAccount.isCreditCard ?
+          <TextField
+            {...TxnFormProps("creditBalance", onInputChange)}
+            label="Credit Balance"
+            value={newAccount.creditBalance}
+            sx={{ marginTop: 2 }}
+            type="tel"
+            error={accError.creditBalance.err === null ? false : accError.creditBalance.err}
+            helperText={accError.creditBalance.msg}
+          />
+          :
+          ""
+        }
       </DialogContent>
       <DialogActions>
         <Button
