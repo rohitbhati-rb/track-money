@@ -11,7 +11,7 @@ import {
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
+import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, accErrorState, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
 import { UpdateTransactions } from '../txn';
 
@@ -22,6 +22,7 @@ const ManageAccounts = () => {
   const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
   const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [newAccount, setNewAccount] = useState(emptyAccount);
+  const [accError, setAccError] = useState(accErrorState);
 
   const OpenAccDialog = (acc) => {
     if (acc !== null) {
@@ -33,6 +34,8 @@ const ManageAccounts = () => {
 
   const CloseAccDialog = () => {
     setAccDialogOpen(false);
+    setNewAccount(emptyAccount)
+    setAccError(accErrorState)
   };
 
   const OpenAccDeleteDialog = (id) => {
@@ -51,8 +54,8 @@ const ManageAccounts = () => {
   const editAccount = () => {
     const allAccounts = accounts;
     let idx = allAccounts.findIndex(val => val.id === newAccount.id);
-    allAccounts[idx].name = newAccount.name;
-    allAccounts[idx].balance = newAccount.balance;
+    allAccounts[idx] = newAccount;
+    allAccounts[idx].updatedAt = Date();
     setAccounts(allAccounts);
     setNewAccount(emptyAccount);
     setIsEditAccount(false);
@@ -85,7 +88,7 @@ const ManageAccounts = () => {
               <Typography sx={{ fontSize: 18, letterSpacing: 0.8 }} color="text.secondary" variant="p" component="div">
                 Balance:&nbsp;
                 <Typography variant='p' sx={{ display: "inline", letterSpacing: 0.8 }} color="text.primary">
-                  ₹{val.balance}
+                  ₹{val.openingBalance}
                 </Typography>
               </Typography>
               <Typography component='span' sx={{ fontSize: 12 }} color="text.secondary">
@@ -99,6 +102,8 @@ const ManageAccounts = () => {
           </Card>
         ))}
         <AccountDialog
+          accError={accError}
+          setAccError={setAccError}
           isEditAccount={isEditAccount}
           newAccount={newAccount}
           setNewAccount={setNewAccount}
