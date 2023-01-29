@@ -7,7 +7,18 @@ export const ROUTES = ["/transactions", "/accounts", "/reports"];
 export const ACCOUNTS_KEY = "acc"
 export const TRANSACTIONS_KEY = "txns"
 
-export const emptyAccount = { id: '', name: '', balance: '', createdAt: '' };
+export const emptyAccount = {
+  id: '',
+  name: '',
+  balance: '',
+  openingBalance: '',
+  createdAt: '',
+  updatedAt: ''
+};
+export const accErrorState = {
+  name: {err:null, msg:''},
+  openingBalance: {err:null, msg:''}
+};
 export const emptyTxn = {
   id: '',
   type: 1,
