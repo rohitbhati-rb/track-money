@@ -1,8 +1,16 @@
 function updateBalance(account, amount, operation) {
-  if (operation === "debit")
-    account.balance = Number(account.balance) - Number(amount);
-  else if (operation === "credit")
-    account.balance = Number(account.balance) + Number(amount);
+  if (operation === "debit") {
+    if (account.isCreditCard)
+      account.creditBalance = Number(account.creditBalance) - Number(amount);
+    else
+      account.balance = Number(account.balance) - Number(amount);
+  }
+  else if (operation === "credit") {
+    if (account.isCreditCard)
+      account.creditBalance = Number(account.creditBalance) + Number(amount);
+    else
+      account.balance = Number(account.balance) + Number(amount);
+  }
   return account;
 }
 
@@ -35,7 +43,7 @@ export function UpdateAccountBalance(accounts, setAccounts, txn, isDelete = fals
 
 // Deletes the account associated with the provided id
 // Deletes all the transactions(1 & 3) associated with the provided account id
-export function UpdateTransactions(accounts, setAccounts, transactions, setTransactions, accId) {
+export function DeleteAcc_and_UpdateTxns(accounts, setAccounts, transactions, setTransactions, accId) {
   const newAccounts = accounts.filter(acc => acc.id !== accId)
   setAccounts(newAccounts)
   const newTxns = transactions.filter(txn => txn.type === 2 ? txn.fromAcc.id !== accId : txn.account.id !== accId)

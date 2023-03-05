@@ -8,12 +8,13 @@ import {
   Container,
   Typography
 } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
+import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, accErrorState, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
-import { UpdateTransactions } from '../txn';
+import { DeleteAcc_and_UpdateTxns } from '../txn';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
@@ -22,6 +23,7 @@ const ManageAccounts = () => {
   const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
   const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [newAccount, setNewAccount] = useState(emptyAccount);
+  const [accError, setAccError] = useState(accErrorState);
 
   const OpenAccDialog = (acc) => {
     if (acc !== null) {
@@ -33,6 +35,8 @@ const ManageAccounts = () => {
 
   const CloseAccDialog = () => {
     setAccDialogOpen(false);
+    setNewAccount(emptyAccount)
+    setAccError(accErrorState)
   };
 
   const OpenAccDeleteDialog = (id) => {
@@ -43,6 +47,9 @@ const ManageAccounts = () => {
     setDeleteAccDialogOpen({ open: false, id: undefined });
   };
   const addNewAccount = () => {
+    newAccount.id = uuidv4();
+    newAccount.createdAt = Date();
+    newAccount.balance = newAccount.openingBalance;
     const newAccounts = accounts;
     newAccounts.push(newAccount);
     setAccounts(newAccounts);
@@ -51,19 +58,19 @@ const ManageAccounts = () => {
   const editAccount = () => {
     const allAccounts = accounts;
     let idx = allAccounts.findIndex(val => val.id === newAccount.id);
-    allAccounts[idx].name = newAccount.name;
-    allAccounts[idx].balance = newAccount.balance;
+    allAccounts[idx] = newAccount;
+    allAccounts[idx].updatedAt = Date();
     setAccounts(allAccounts);
     setNewAccount(emptyAccount);
     setIsEditAccount(false);
   }
   const deleteAccount = (accId) => {
-    UpdateTransactions(accounts, setAccounts, transactions, setTransactions, accId)
+    DeleteAcc_and_UpdateTxns(accounts, setAccounts, transactions, setTransactions, accId)
   }
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h5" gutterBottom component="div" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" gutterBottom component="div" sx={{ marginBottom: 2 }}>
           {MY_ACCOUNTS}
         </Typography>
         <Button
@@ -79,26 +86,40 @@ const ManageAccounts = () => {
         {accounts.map((val, idx) => (
           <Card sx={{ margin: "15px 0", display: "flex", justifyContent: "space-between" }} key={idx}>
             <CardContent>
-              <Typography variant="h5" component="div">
+              <Typography sx={{ fontSize: 16 }} variant="p" component="div">
                 {val.name}
-              </Typography>
-              <Typography sx={{ fontSize: 18, letterSpacing: 0.8 }} color="text.secondary" variant="p" component="div">
-                Balance:&nbsp;
-                <Typography variant='p' sx={{ display: "inline", letterSpacing: 0.8 }} color="text.primary">
-                  ₹{val.balance}
+                <Typography sx={{ fontSize: 10 }} color="text.secondary" variant="p" component="span">
+                  {val.isCreditCard ? " Credit Card" : ""}
                 </Typography>
               </Typography>
+
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" variant="p" component="div">
+                {val.isCreditCard ? "Credit Limit: " : "Opening Balance: "}
+                <Typography variant='p' sx={{ display: "inline" }} color="text.primary">
+                  ₹ {val.isCreditCard ? val.creditLimit : val.openingBalance}
+                </Typography>
+              </Typography>
+
+              <Typography sx={{ fontSize: 14 }} color="text.secondary" variant="p" component="div">
+                {val.isCreditCard ? "Credit Balance: " : "Current Balance: "}
+                <Typography variant='p' sx={{ display: "inline" }} color="text.primary">
+                  ₹ {val.isCreditCard ? val.creditBalance : val.balance}
+                </Typography>
+              </Typography>
+
               <Typography component='span' sx={{ fontSize: 12 }} color="text.secondary">
                 Date Added: {getFormattedDate(val.createdAt)}
               </Typography>
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
-              <Button size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
-              <Button size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
+              <Button variant='text' size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
+              <Button variant='text' size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
             </CardActions>
           </Card>
         ))}
         <AccountDialog
+          accError={accError}
+          setAccError={setAccError}
           isEditAccount={isEditAccount}
           newAccount={newAccount}
           setNewAccount={setNewAccount}
