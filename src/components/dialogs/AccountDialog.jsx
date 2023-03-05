@@ -8,7 +8,6 @@ import {
   FormControlLabel,
   TextField
 } from "@mui/material";
-import { v4 as uuidv4 } from 'uuid';
 import { emptyErrObj } from "../../constants";
 import { TxnFormProps } from "../../helpers";
 
@@ -17,8 +16,6 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewAccount((prev) => ({ ...prev, [name]: value }))
-    if (!isEditAccount)
-      setNewAccount((prev) => ({ ...prev, id: uuidv4(), createdAt: Date() }))
     validateAccFormData(name, value)
   }
   const onCheckBoxChange = (e) => {
@@ -44,19 +41,19 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
     let fieldErrors = accError;
     switch (name) {
       case "openingBalance":
-        if (Number(value) > 0)
+        if (value !== '' && Number(value) >= 0)
           fieldErrors.openingBalance = { err: false, msg: '' }
         else
-          fieldErrors.openingBalance = { err: true, msg: "Amount must be a number" }
+          fieldErrors.openingBalance = { err: true, msg: "Opening Balance must be a non-negative number" }
         break;
       case "creditLimit":
-        if (Number(value) > 0)
+        if (value !== '' && Number(value) >= 0)
           fieldErrors.creditLimit = { err: false, msg: '' }
         else
-          fieldErrors.creditLimit = { err: true, msg: "Amount must be a number" }
+          fieldErrors.creditLimit = { err: true, msg: "Credit Limit must be a non-negative number" }
         break;
       case "creditBalance":
-        if (Number(value) > 0)
+        if (!isNaN(Number(value)))
           fieldErrors.creditBalance = { err: false, msg: '' }
         else
           fieldErrors.creditBalance = { err: true, msg: "Amount must be a number" }
@@ -97,6 +94,7 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
           sx={{ marginTop: 1 }}
           control={
             <Checkbox
+              disabled={isEditAccount}
               checked={newAccount.isCreditCard}
               onChange={onCheckBoxChange}
               inputProps={{ 'aria-label': 'controlled' }}

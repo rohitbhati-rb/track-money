@@ -47,7 +47,7 @@ const Transactions = () => {
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h5" gutterBottom component="div" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" gutterBottom component="div" sx={{ marginBottom: 2 }}>
           {MY_TRANSACTIONS}
         </Typography>
         <Button
