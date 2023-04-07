@@ -12,7 +12,16 @@ import { emptyErrObj } from "../../constants";
 import { TxnFormProps } from "../../helpers";
 
 
-const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNewAccount, addAccount, open, handleClose }) => {
+const AccountDialog = ({
+  accError,
+  setAccError,
+  isEditAccount,
+  newAccount,
+  setNewAccount,
+  addAccount,
+  open,
+  handleClose
+}) => {
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewAccount((prev) => ({ ...prev, [name]: value }))
@@ -60,7 +69,7 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
         break;
       case "name":
         if (value === "" || !value.match(/^[a-zA-Z0-9_ ]+$/))
-          fieldErrors.name = { err: true, msg: "Account Name is invalid" }
+          fieldErrors.name = { err: true, msg: "Only alphabets, numbers and underscores are allowed." }
         else
           fieldErrors.name = { err: false, msg: '' };
         break;
@@ -68,10 +77,8 @@ const AccountDialog = ({ accError, setAccError, isEditAccount, newAccount, setNe
     }
     setAccError((prev) => ({ ...prev, ...fieldErrors }))
   }
-  let isFormValidated = accError.name.err !== null &&
-    (accError.openingBalance.err !== null || (accError.creditLimit.err !== null && accError.creditBalance.err !== null)) &&
-    !accError.name.err &&
-    (!accError.openingBalance.err || (!accError.creditLimit.err !== null && !accError.creditBalance.err !== null))
+  let isFormValidated = accError.name.err === false && accError.name.msg === ''
+    && accError.openingBalance.msg === '' && accError.creditLimit.msg === '' && accError.creditBalance.msg === ''
   return (
     <Dialog
       open={open}
