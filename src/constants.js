@@ -8,6 +8,7 @@ export const ACCOUNTS_KEY = "acc"
 export const TRANSACTIONS_KEY = "txns"
 
 export const emptyErrObj = { err: null, msg: '' };
+export const noErrObj = { err: false, msg: '' };
 export const emptyAccount = {
   id: '',
   name: '',
