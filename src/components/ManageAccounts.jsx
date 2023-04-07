@@ -12,9 +12,17 @@ import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
 import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
-import { ADD_ACCOUNT, MY_ACCOUNTS, emptyAccount, accErrorState, ACCOUNTS_KEY, TRANSACTIONS_KEY } from '../constants';
+import {
+  ACCOUNTS_KEY,
+  ADD_ACCOUNT,
+  MY_ACCOUNTS,
+  TRANSACTIONS_KEY,
+  accErrorState,
+  emptyAccount,
+  noErrObj
+} from '../constants';
 import { useLocalStorage } from '../hooks';
-import { DeleteAcc_and_UpdateTxns } from '../txn';
+import { DeleteAcc_and_UpdateTxns, Get_Updated_Current_Balance } from '../txn';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
@@ -29,6 +37,12 @@ const ManageAccounts = () => {
     if (acc !== null) {
       setNewAccount(acc);
       setIsEditAccount(true);
+      setAccError({
+        name: noErrObj,
+        creditLimit: noErrObj,
+        openingBalance: noErrObj,
+        creditBalance: noErrObj
+      })
     }
     setAccDialogOpen(true);
   };
@@ -49,7 +63,7 @@ const ManageAccounts = () => {
   const addNewAccount = () => {
     newAccount.id = uuidv4();
     newAccount.createdAt = Date();
-    newAccount.balance = newAccount.openingBalance;
+    newAccount.balance = Number(newAccount.openingBalance);
     const newAccounts = accounts;
     newAccounts.push(newAccount);
     setAccounts(newAccounts);
@@ -60,6 +74,8 @@ const ManageAccounts = () => {
     let idx = allAccounts.findIndex(val => val.id === newAccount.id);
     allAccounts[idx] = newAccount;
     allAccounts[idx].updatedAt = Date();
+    if (!newAccount.isCreditCard)
+      allAccounts[idx].balance = Get_Updated_Current_Balance(transactions, newAccount);
     setAccounts(allAccounts);
     setNewAccount(emptyAccount);
     setIsEditAccount(false);
