@@ -50,3 +50,15 @@ export function DeleteAcc_and_UpdateTxns(accounts, setAccounts, transactions, se
   setTransactions(newTxns)
   return true;
 }
+
+// Updates current balance when opening balance is updated
+export function Get_Updated_Current_Balance(transactions, account) {
+  let balance = Number(account.openingBalance);
+  transactions.forEach(val => {
+    if (val.type !== 3)
+      balance -= Number(val.amount)
+    else
+      balance += Number(val.amount)
+  })
+  return balance;
+}
