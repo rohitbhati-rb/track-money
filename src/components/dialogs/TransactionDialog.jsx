@@ -10,13 +10,23 @@ import {
 import TxnForm from './TxnForm';
 import {
   ADD_TRANSACTION,
+  EDIT_TRANSACTION,
   TxnTabs,
   emptyTxn,
   txnErrorState as emptyTxnError
 } from '../../constants';
 import { TxnTabProps } from '../../helpers';
 
-const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, txnError, setTxnError }) => {
+const TransactionDialog = ({
+  open,
+  handleClose,
+  isEditTxn,
+  newTxn,
+  setNewTxn,
+  addTxn,
+  txnError,
+  setTxnError
+}) => {
   const [txnTabValue, setTxnTabValue] = useState(0);
   const [formValid, setFormValid] = useState(false);
   const txnTabValueChange = (e, val) => {
@@ -28,7 +38,7 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
     e.preventDefault();
     validateTxnForm()
     if (formValid) {
-      addNewTxn()
+      addTxn()
       setTxnTabValue(0)
       handleClose()
     }
@@ -63,15 +73,19 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
-        {ADD_TRANSACTION}
+        {isEditTxn ? EDIT_TRANSACTION : ADD_TRANSACTION}
       </DialogTitle>
       <form noValidate autoComplete="off">
         <DialogContent sx={{ padding: "5 1", width: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={txnTabValue} onChange={txnTabValueChange} aria-label="basic tabs example">
-              <Tab label={TxnTabs[0]} {...TxnTabProps(0)} />
-              <Tab label={TxnTabs[1]} {...TxnTabProps(1)} />
-              <Tab label={TxnTabs[2]} {...TxnTabProps(2)} />
+            <Tabs
+              value={txnTabValue}
+              onChange={txnTabValueChange}
+              aria-label="basic tabs example"
+            >
+              <Tab disabled={isEditTxn} label={TxnTabs[0]} {...TxnTabProps(0)} />
+              <Tab disabled={isEditTxn} label={TxnTabs[1]} {...TxnTabProps(1)} />
+              <Tab disabled={isEditTxn} label={TxnTabs[2]} {...TxnTabProps(2)} />
             </Tabs>
           </Box>
           <TxnForm
@@ -91,7 +105,7 @@ const TransactionDialog = ({ open, handleClose, newTxn, setNewTxn, addNewTxn, tx
               onClick={handleAddTxn}
               type="submit"
             >
-              Add
+              {isEditTxn ? "Edit" : "Add"}
             </Button>
           </DialogActions>
         </DialogContent>

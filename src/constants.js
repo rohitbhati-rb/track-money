@@ -1,5 +1,6 @@
 export const APP_NAME = "t₹ack money";
 export const ADD_TRANSACTION = "Add Transaction";
+export const EDIT_TRANSACTION = "Edit Transaction";
 export const MY_TRANSACTIONS = "My Transactions";
 export const MY_ACCOUNTS = "My Accounts";
 export const ADD_ACCOUNT = "Add Account";

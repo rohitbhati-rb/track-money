@@ -3,7 +3,7 @@ import { Card, CardContent, Chip, Typography } from "@mui/material";
 import { COMMON_CARD_CHIP_CSS, COMMON_CARD_CSS } from "../../constants";
 import { getFormattedDate } from "../../helpers";
 
-const ExpenseCard = ({ data }) => {
+const ExpenseCard = ({ data, OpenTxnDialog }) => {
   const isIncome = data.type === 3;
   const expensIncomeChipStyles = {
     ...COMMON_CARD_CHIP_CSS,
@@ -11,6 +11,7 @@ const ExpenseCard = ({ data }) => {
   }
   return (
     <Card
+      onClick={() => OpenTxnDialog(data)}
       sx={{
         ...COMMON_CARD_CSS,
         borderColor: isIncome ? "#00e676" : "#ff5252"

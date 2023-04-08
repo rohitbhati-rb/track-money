@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
   Button,
@@ -20,11 +21,17 @@ import { UpdateAccountBalance } from '../txn';
 const Transactions = () => {
   const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
+  const [isEditTxn, setIsEditTxn] = useState(false);
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);
 
-  const OpenTxnDialog = () => {
+  const OpenTxnDialog = (txn) => {
+    if (txn !== null) {
+      setNewTxn(txn)
+      setIsEditTxn(true)
+      setTxnError(txnErrorState)
+    }
     setTxnDialogOpen(true)
   }
   const CloseTxnDialog = () => {
@@ -34,6 +41,8 @@ const Transactions = () => {
   }
   const addNewTxn = () => {
     const txns = transactions;
+    newTxn.id = uuidv4();
+    newTxn.createdAt = Date();
     txns.push(newTxn)
     if (UpdateAccountBalance(accounts, setAccounts, newTxn)) {
       setTransactions(txns)
@@ -42,6 +51,15 @@ const Transactions = () => {
     } else {
       console.log("Error: Unable to add transaction")
     }
+  }
+  const editTxn = () => {
+    const allTxns = transactions;
+    let idx = allTxns.findIndex(val => val.id === newTxn.id);
+    allTxns[idx] = newTxn;
+    allTxns[idx].updatedAt = Date();
+    setTransactions(allTxns);
+    setNewTxn(emptyTxn);
+    setIsEditTxn(false);
   }
 
   return (
@@ -54,7 +72,7 @@ const Transactions = () => {
           size='small'
           variant='contained'
           sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
-          onClick={OpenTxnDialog}
+          onClick={() => OpenTxnDialog(null)}
         >
           {ADD_TRANSACTION}
         </Button>
@@ -62,7 +80,7 @@ const Transactions = () => {
       <Box sx={{ height: "100%", width: "100%" }}>
         {transactions.map((val, idx) => (
           val.type === 1 || val.type === 3 ?
-            <ExpenseCard data={val} key={idx} />
+            <ExpenseCard OpenTxnDialog={OpenTxnDialog} data={val} key={idx} />
             :
             val.type === 2 ?
               <TransferCard data={val} key={idx} />
@@ -72,9 +90,10 @@ const Transactions = () => {
         <TransactionDialog
           open={txnDialogOpen}
           handleClose={CloseTxnDialog}
+          isEditTxn={isEditTxn}
           newTxn={newTxn}
           setNewTxn={setNewTxn}
-          addNewTxn={addNewTxn}
+          addTxn={isEditTxn ? editTxn : addNewTxn}
           txnError={txnError}
           setTxnError={setTxnError}
         />
