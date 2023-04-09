@@ -4,9 +4,11 @@ import EastIcon from '@mui/icons-material/East';
 import { getFormattedDate } from "../../helpers";
 import { COMMON_CARD_CHIP_CSS, COMMON_CARD_CSS } from "../../constants";
 
-const TransferCard = ({ data }) => {
+const TransferCard = ({ data, OpenTxnDialog }) => {
   return (
-    <Card sx={COMMON_CARD_CSS}>
+    <Card
+      onClick={() => OpenTxnDialog(data)}
+      sx={COMMON_CARD_CSS}>
       <CardContent sx={{
         height: "100%", width: "100%", padding: "4px 14px",
         "&:last-child": {
