@@ -6,9 +6,9 @@ import {
   DialogTitle
 } from "@mui/material"
 
-const DeleteDialog = ({ open, handleClose, deleteAccount, id }) => {
-  const handleDeleteAccount = () => {
-    deleteAccount(id)
+const DeleteDialog = ({ open, handleClose, deleteData, id, isTxn = false }) => {
+  const handleDelete = () => {
+    deleteData(id)
     handleClose()
   }
   return (
@@ -18,16 +18,17 @@ const DeleteDialog = ({ open, handleClose, deleteAccount, id }) => {
       aria-labelledby="responsive-dialog-title"
     >
       <DialogTitle id="responsive-dialog-title">
-        {"Delete Account"}
+        {isTxn ? "Delete Transaction" : "Delete Account"}
       </DialogTitle>
       <DialogContent sx={{ padding: "5 1" }}>
-        {"Are you sure you want to delete this account ?"}
+        {"Are you sure you want to delete this "}
+        {isTxn ? "transaction ?" : "account ?"}
       </DialogContent>
       <DialogActions>
         <Button autoFocus onClick={handleClose}>
           Cancel
         </Button>
-        <Button onClick={handleDeleteAccount} autoFocus>
+        <Button onClick={handleDelete} autoFocus>
           Delete
         </Button>
       </DialogActions>
