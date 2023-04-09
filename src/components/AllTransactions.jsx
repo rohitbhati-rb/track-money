@@ -11,7 +11,7 @@ import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
 import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
-import { UpdateAccountBalance } from '../txn';
+import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit } from '../txn';
 
 // transaction types
 // 1 -> Expense
@@ -36,6 +36,7 @@ const Transactions = () => {
   }
   const CloseTxnDialog = () => {
     setTxnDialogOpen(false)
+    setIsEditTxn(false)
     setNewTxn(emptyTxn)
     setTxnError(txnErrorState)
   }
@@ -44,20 +45,24 @@ const Transactions = () => {
     newTxn.id = uuidv4();
     newTxn.createdAt = Date();
     txns.push(newTxn)
-    if (UpdateAccountBalance(accounts, setAccounts, newTxn)) {
+    if (Update_Account_Balance_On_Txn(accounts, setAccounts, newTxn)) {
       setTransactions(txns)
-      setNewTxn(emptyTxn)
-      setTxnError(txnErrorState)
     } else {
       console.log("Error: Unable to add transaction")
     }
+    setNewTxn(emptyTxn)
+    setTxnError(txnErrorState)
   }
   const editTxn = () => {
     const allTxns = transactions;
     let idx = allTxns.findIndex(val => val.id === newTxn.id);
-    allTxns[idx] = newTxn;
-    allTxns[idx].updatedAt = Date();
-    setTransactions(allTxns);
+    if (Update_Account_Balance_On_Txn_Edit(accounts, setAccounts, newTxn, allTxns[idx])) {
+      allTxns[idx] = newTxn;
+      allTxns[idx].updatedAt = Date();
+      setTransactions(allTxns);
+    } else {
+      console.log("Error: Unable to edit transaction")
+    }
     setNewTxn(emptyTxn);
     setIsEditTxn(false);
   }
