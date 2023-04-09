@@ -11,7 +11,7 @@ import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
 import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
-import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit } from '../txn';
+import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit, Delete_Txn } from '../txn';
 
 // transaction types
 // 1 -> Expense
@@ -66,6 +66,14 @@ const Transactions = () => {
     setNewTxn(emptyTxn);
     setIsEditTxn(false);
   }
+  const deleteTxn = (txnId) => {
+    if (Delete_Txn(accounts, setAccounts, transactions, setTransactions, txnId)) {
+      CloseTxnDialog()
+      console.log("Transaction deleted")
+    } else {
+      console.log("Error deleting transaction")
+    }
+  }
 
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
@@ -88,7 +96,7 @@ const Transactions = () => {
             <ExpenseCard OpenTxnDialog={OpenTxnDialog} data={val} key={idx} />
             :
             val.type === 2 ?
-              <TransferCard data={val} key={idx} />
+              <TransferCard OpenTxnDialog={OpenTxnDialog} data={val} key={idx} />
               :
               ""
         ))}
@@ -99,6 +107,7 @@ const Transactions = () => {
           newTxn={newTxn}
           setNewTxn={setNewTxn}
           addTxn={isEditTxn ? editTxn : addNewTxn}
+          deleteTxn={deleteTxn}
           txnError={txnError}
           setTxnError={setTxnError}
         />

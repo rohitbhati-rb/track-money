@@ -22,7 +22,7 @@ import {
   noErrObj
 } from '../constants';
 import { useLocalStorage } from '../hooks';
-import { Delete_Txns_On_Account_Deletion, Get_Updated_Current_Balance } from '../txn';
+import { Delete_Account_And_Related_Txn, Get_Updated_Current_Balance } from '../txn';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
@@ -81,7 +81,7 @@ const ManageAccounts = () => {
     setIsEditAccount(false);
   }
   const deleteAccount = (accId) => {
-    Delete_Txns_On_Account_Deletion(accounts, setAccounts, transactions, setTransactions, accId)
+    Delete_Account_And_Related_Txn(accounts, setAccounts, transactions, setTransactions, accId)
   }
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2 }}>
