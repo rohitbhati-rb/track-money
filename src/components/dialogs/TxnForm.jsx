@@ -193,9 +193,9 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
           name="dateTime"
           value={newTxn.dateTime}
           inputFormat="DD/MM/YYYY"
-          onChange={(v) => setNewTxn((prev) => ({ ...prev, dateTime: v }))}
+          onChange={(v) => setNewTxn((prev) => ({ ...prev, dateTime: (new Date(v)).getTime() }))}
           renderInput={(params) => <TextField {...params} sx={{ my: 1.25 }} fullWidth />}
-        // renderInput={(params) => {params.inputProps.value = getFormattedDate(params.inputProps.value); return <TextField {...params} sx={{ my: 1.25 }} fullWidth />}}
+        // Math.floor((new Date()).getTime()/1000)
         />
       </LocalizationProvider>
       <TextField

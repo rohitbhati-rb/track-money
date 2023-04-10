@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
@@ -11,7 +11,7 @@ import ExpenseCard from './cards/ExpenseCard';
 import TransferCard from './cards/TransferCard';
 import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../constants';
 import { useLocalStorage } from '../hooks';
-import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit, Delete_Txn } from '../txn';
+import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit, Delete_Txn, } from '../txn';
 
 // transaction types
 // 1 -> Expense
@@ -25,6 +25,10 @@ const Transactions = () => {
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);
+
+  useEffect(() => {
+    console.log((transactions))
+  }, [transactions])
 
   const OpenTxnDialog = (txn) => {
     if (txn !== null) {
@@ -43,7 +47,7 @@ const Transactions = () => {
   const addNewTxn = () => {
     const txns = transactions;
     newTxn.id = uuidv4();
-    newTxn.createdAt = Date();
+    newTxn.createdAt = (new Date()).getTime();
     txns.push(newTxn)
     if (Update_Account_Balance_On_Txn(accounts, setAccounts, newTxn)) {
       setTransactions(txns)
@@ -58,7 +62,7 @@ const Transactions = () => {
     let idx = allTxns.findIndex(val => val.id === newTxn.id);
     if (Update_Account_Balance_On_Txn_Edit(accounts, setAccounts, newTxn, allTxns[idx])) {
       allTxns[idx] = newTxn;
-      allTxns[idx].updatedAt = Date();
+      allTxns[idx].updatedAt = (new Date()).getTime();
       setTransactions(allTxns);
     } else {
       console.log("Error: Unable to edit transaction")
@@ -91,7 +95,7 @@ const Transactions = () => {
         </Button>
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
-        {transactions.map((val, idx) => (
+        {((transactions)).map((val, idx) => (
           val.type === 1 || val.type === 3 ?
             <ExpenseCard OpenTxnDialog={OpenTxnDialog} data={val} key={idx} />
             :

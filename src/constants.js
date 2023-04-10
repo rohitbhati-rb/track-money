@@ -38,7 +38,7 @@ export const emptyTxn = {
   fromAcc: '', // { id: '', name: '' }, 2
   toAcc: '', // { id: '', name: '' }, 2
   tags: [], //[{ id: '', name: '' }],
-  dateTime: Date(),
+  dateTime: (new Date()).getTime(),
   createdAt: '',
   updatedAt: ''
 };
