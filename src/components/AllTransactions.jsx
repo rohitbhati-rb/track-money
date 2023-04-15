@@ -50,6 +50,7 @@ const Transactions = () => {
     newTxn.createdAt = (new Date()).getTime();
     txns.push(newTxn)
     if (Update_Account_Balance_On_Txn(accounts, setAccounts, newTxn)) {
+      txns.sort((a,b) => b.createdAt - a.createdAt)
       setTransactions(txns)
     } else {
       console.log("Error: Unable to add transaction")
