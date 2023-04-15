@@ -38,7 +38,7 @@ export const emptyTxn = {
   fromAcc: '', // { id: '', name: '' }, 2
   toAcc: '', // { id: '', name: '' }, 2
   tags: [], //[{ id: '', name: '' }],
-  dateTime: Date(),
+  dateTime: (new Date()).getTime(),
   createdAt: '',
   updatedAt: ''
 };
@@ -52,7 +52,7 @@ export const txnErrorState = {
   tags: ""
 };
 // Navbar constants
-export const NAV_BUTTONS = ["All Transactions", "Manage Accounts", "Reports"];
+export const NAV_BUTTONS = ["Transactions", "Accounts", "Reports"];
 export const SETTINGS = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export const COMMON_NAVBAR_SETTINGS = {
   mr: 2,
@@ -79,7 +79,7 @@ export const TxnTagsMenuProps = {
 
 // Cards constants
 export const COMMON_CARD_CSS = {
-  margin: "15px 0",
+  margin: "10px 0",
   display: "flex",
   justifyContent: "space-between",
   borderLeft: "3px solid",
@@ -87,9 +87,7 @@ export const COMMON_CARD_CSS = {
   borderColor: "#40c4ff",
 };
 export const COMMON_CARD_CHIP_CSS = {
-  background: "#40c4ff",
   color: "black",
   marginRight: 1,
-  fontWeight: "bold",
   fontSize: 10
 }

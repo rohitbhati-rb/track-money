@@ -84,15 +84,15 @@ const ManageAccounts = () => {
     Delete_Account_And_Related_Txn(accounts, setAccounts, transactions, setTransactions, accId)
   }
   return (
-    <Container maxWidth="xl" sx={{ marginTop: 2 }}>
+    <Container maxWidth="xl" sx={{ marginTop: 2, marginBottom: '60px' }}>
       <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h6" gutterBottom component="div" sx={{ marginBottom: 2 }}>
+        <Typography variant="p" gutterBottom component="p">
           {MY_ACCOUNTS}
         </Typography>
         <Button
           size='small'
           variant='contained'
-          sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
+          sx={{ textTransform: "none", background: "orange", fontSize: { xs: 14, md: 18 } }}
           onClick={() => OpenAccDialog(null)}
         >
           {ADD_ACCOUNT}
@@ -101,35 +101,35 @@ const ManageAccounts = () => {
       <Box sx={{ height: "100%", width: "100%" }}>
         {accounts.map((val, idx) => (
           <Card sx={{ margin: "15px 0", display: "flex", justifyContent: "space-between" }} key={idx}>
-            <CardContent>
-              <Typography sx={{ fontSize: 16 }} variant="p" component="div">
+            <CardContent sx={{paddingY:1}}>
+              <Typography sx={{ fontSize: { xs: 14, md: 16 } }} variant="p" component="div">
                 {val.name}
                 <Typography sx={{ fontSize: 10 }} color="text.secondary" variant="p" component="span">
                   {val.isCreditCard ? " Credit Card" : ""}
                 </Typography>
               </Typography>
 
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" variant="p" component="div">
+              <Typography sx={{ fontSize: { xs: 12, md: 14 } }} color="text.secondary" variant="p" component="div">
                 {val.isCreditCard ? "Credit Limit: " : "Opening Balance: "}
                 <Typography variant='p' sx={{ display: "inline" }} color="text.primary">
                   ₹ {val.isCreditCard ? val.creditLimit : val.openingBalance}
                 </Typography>
               </Typography>
 
-              <Typography sx={{ fontSize: 14 }} color="text.secondary" variant="p" component="div">
+              <Typography sx={{ fontSize: { xs: 12, md: 14 } }} color="text.secondary" variant="p" component="div">
                 {val.isCreditCard ? "Credit Balance: " : "Current Balance: "}
                 <Typography variant='p' sx={{ display: "inline" }} color="text.primary">
                   ₹ {val.isCreditCard ? val.creditBalance : val.balance}
                 </Typography>
               </Typography>
 
-              <Typography component='span' sx={{ fontSize: 12 }} color="text.secondary">
+              <Typography component='span' sx={{ fontSize: { xs: 11, md: 12 } }} color="text.secondary">
                 Date Added: {getFormattedDate(val.createdAt)}
               </Typography>
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
-              <Button variant='text' size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
-              <Button variant='text' size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
+              <Button sx={{ textTransform: 'none' }} variant='text' size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
+              <Button sx={{ textTransform: 'none' }} variant='text' size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
             </CardActions>
           </Card>
         ))}
@@ -147,7 +147,7 @@ const ManageAccounts = () => {
           id={accDeleteDialogOpen.id}
           open={accDeleteDialogOpen.open}
           handleClose={CloseAccDeleteDialog}
-          deleteAccount={deleteAccount}
+          deleteData={deleteAccount}
         />
       </Box>
     </Container>
