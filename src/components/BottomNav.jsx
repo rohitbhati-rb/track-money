@@ -23,8 +23,13 @@ export default function BottomNav() {
   }, [location])
 
   return (
-    <Paper sx={{ position: 'sticky', bottom: 0, left: 0, right: 0 }}>
+    <Paper sx={{ width: "100%", position: 'fixed', bottom: 0 }}>
       <BottomNavigation
+        sx={{
+          height: '50px',
+          marginTop: 0.35,
+          borderTopColor: 'grey'
+        }}
         showLabels
         value={value}
         onChange={(e, newValue) => {

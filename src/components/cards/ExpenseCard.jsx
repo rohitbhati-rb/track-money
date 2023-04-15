@@ -24,10 +24,10 @@ const ExpenseCard = ({ data, OpenTxnDialog }) => {
         }
       }}>
         <Typography component="div" sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Typography variant="h6" component="div">
+          <Typography variant="p" component="div">
             {isIncome ? data.payer : data.payee}
           </Typography>
-          <Typography variant="h6" component="div" sx={{ color: isIncome ? "#00e676" : "#ff5252" }}>
+          <Typography variant="p" component="div" sx={{ color: isIncome ? "#00e676" : "#ff5252" }}>
             {isIncome ? '+' : '-'} ₹{data.amount}
           </Typography>
         </Typography>
@@ -35,7 +35,7 @@ const ExpenseCard = ({ data, OpenTxnDialog }) => {
           <Typography sx={{ fontSize: 12, maxWidth: "50%" }} color="text.secondary" variant="p" component="div">
             {data.description}
           </Typography>
-          <Typography sx={{ fontSize: 14 }} variant="p" component="div">
+          <Typography sx={{ fontSize: { xs: 12, md: 14 } }} variant="p" component="div">
             {data.account.name}
           </Typography>
         </Typography>

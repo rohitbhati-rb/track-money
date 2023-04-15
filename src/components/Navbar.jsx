@@ -62,25 +62,25 @@ const Navbar = (props) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xxl">
         <Toolbar disableGutters>
           <Typography
-            variant="h5"
+            variant="h1"
             noWrap
             component="a"
             onClick={() => navigate(ROUTES[0], { replace: false })}
             sx={{
               ...COMMON_NAVBAR_SETTINGS,
               display: { xs: 'none', md: 'flex' },
-              fontSize: 32,
+              fontSize: 28,
               cursor: "pointer"
             }}
           >
             {APP_NAME}
           </Typography>
           <Typography
-            variant="h5"
+            variant="h1"
             noWrap
             component="a"
             href={ROUTES[0]}
@@ -89,7 +89,7 @@ const Navbar = (props) => {
               ml: 0.5,
               display: { xs: 'flex', md: 'none' },
               flexGrow: 1,
-              fontSize: 26,
+              fontSize: 22,
             }}
           >
             {APP_NAME}
@@ -100,12 +100,13 @@ const Navbar = (props) => {
                 key={idx}
                 onClick={() => handleNavClick(idx)}
                 sx={{
+                  mx: 1,
                   my: 2,
                   display: 'block',
                   textTransform: "none",
                   color: value === idx ? '#90caf9' : 'white',
-                  fontWeight: value === idx ? "900" : "400",
-                  fontSize: value === idx ? 22 : 18,
+                  fontWeight: "400",
+                  fontSize: value === idx ? 18 : 16,
                 }}
               >
                 {val}
@@ -119,7 +120,7 @@ const Navbar = (props) => {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: 5 }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={originObject}

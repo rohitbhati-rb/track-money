@@ -50,7 +50,7 @@ const Transactions = () => {
     newTxn.createdAt = (new Date()).getTime();
     txns.push(newTxn)
     if (Update_Account_Balance_On_Txn(accounts, setAccounts, newTxn)) {
-      txns.sort((a,b) => b.createdAt - a.createdAt)
+      txns.sort((a, b) => b.createdAt - a.createdAt)
       setTransactions(txns)
     } else {
       console.log("Error: Unable to add transaction")
@@ -81,15 +81,15 @@ const Transactions = () => {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ marginTop: 2 }}>
-      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Typography variant="h6" gutterBottom component="div" sx={{ marginBottom: 2 }}>
+    <Container maxWidth="xl" sx={{ marginTop: 2, marginBottom: '60px' }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Typography variant="p" gutterBottom component="p">
           {MY_TRANSACTIONS}
         </Typography>
         <Button
           size='small'
           variant='contained'
-          sx={{ textTransform: "none", background: "orange", fontSize: 18 }}
+          sx={{ textTransform: "none", background: "orange", fontSize: { xs: 14, md: 18 } }}
           onClick={() => OpenTxnDialog(null)}
         >
           {ADD_TRANSACTION}
