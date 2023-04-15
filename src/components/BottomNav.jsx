@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Box, BottomNavigation, BottomNavigationAction } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AssessmentIcon from '@mui/icons-material/Assessment';
@@ -23,7 +23,7 @@ export default function BottomNav() {
   }, [location])
 
   return (
-    <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
+    <Paper sx={{ position: 'sticky', bottom: 0, left: 0, right: 0 }}>
       <BottomNavigation
         showLabels
         value={value}
@@ -36,6 +36,6 @@ export default function BottomNav() {
         <BottomNavigationAction label={NAV_BUTTONS[1]} icon={<AccountBalanceIcon />} />
         <BottomNavigationAction label={NAV_BUTTONS[2]} icon={<AssessmentIcon />} />
       </BottomNavigation>
-    </Box>
+    </Paper>
   );
 }

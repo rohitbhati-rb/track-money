@@ -52,7 +52,7 @@ export const txnErrorState = {
   tags: ""
 };
 // Navbar constants
-export const NAV_BUTTONS = ["All Transactions", "Manage Accounts", "Reports"];
+export const NAV_BUTTONS = ["Transactions", "Accounts", "Reports"];
 export const SETTINGS = ['Profile', 'Account', 'Dashboard', 'Logout'];
 export const COMMON_NAVBAR_SETTINGS = {
   mr: 2,
