@@ -147,7 +147,7 @@ const ManageAccounts = () => {
           id={accDeleteDialogOpen.id}
           open={accDeleteDialogOpen.open}
           handleClose={CloseAccDeleteDialog}
-          deleteAccount={deleteAccount}
+          deleteData={deleteAccount}
         />
       </Box>
     </Container>
