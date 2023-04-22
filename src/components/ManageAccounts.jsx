@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
 import AccountDialog from './dialogs/AccountDialog';
-import DeleteDialog from './dialogs/DeleteDialog';
 import { getFormattedDate } from '../helpers';
 import {
   ACCOUNTS_KEY,
@@ -27,7 +26,6 @@ import { Delete_Account_And_Related_Txn, Get_Updated_Current_Balance } from '../
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);
   const [isEditAccount, setIsEditAccount] = useState(false);
-  const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const [accounts, setAccounts] = useLocalStorage(ACCOUNTS_KEY, [])
   const [transactions, setTransactions] = useLocalStorage(TRANSACTIONS_KEY, []);
   const [newAccount, setNewAccount] = useState(emptyAccount);
@@ -48,18 +46,12 @@ const ManageAccounts = () => {
   };
 
   const CloseAccDialog = () => {
-    setAccDialogOpen(false);
+    setAccDialogOpen(false)
+    setIsEditAccount(false)
     setNewAccount(emptyAccount)
     setAccError(accErrorState)
   };
 
-  const OpenAccDeleteDialog = (id) => {
-    setDeleteAccDialogOpen({ open: true, id: id });
-  };
-
-  const CloseAccDeleteDialog = () => {
-    setDeleteAccDialogOpen({ open: false, id: undefined });
-  };
   const addNewAccount = () => {
     newAccount.id = uuidv4();
     newAccount.createdAt = Date();
@@ -81,7 +73,12 @@ const ManageAccounts = () => {
     setIsEditAccount(false);
   }
   const deleteAccount = (accId) => {
-    Delete_Account_And_Related_Txn(accounts, setAccounts, transactions, setTransactions, accId)
+    if (Delete_Account_And_Related_Txn(accounts, setAccounts, transactions, setTransactions, accId)) {
+      console.log("Account deleted")
+      CloseAccDialog()
+    } else {
+      console.log("Error deleting account")
+    }
   }
   return (
     <Container maxWidth="xl" sx={{ marginTop: 2, marginBottom: '60px' }}>
@@ -100,8 +97,8 @@ const ManageAccounts = () => {
       </Box>
       <Box sx={{ height: "100%", width: "100%" }}>
         {accounts.map((val, idx) => (
-          <Card sx={{ margin: "15px 0", display: "flex", justifyContent: "space-between" }} key={idx}>
-            <CardContent sx={{paddingY:1}}>
+          <Card onClick={() => OpenAccDialog(val)} sx={{ margin: "15px 0", display: "flex", justifyContent: "space-between" }} key={idx}>
+            <CardContent sx={{ paddingY: 1 }}>
               <Typography sx={{ fontSize: { xs: 14, md: 16 } }} variant="p" component="div">
                 {val.name}
                 <Typography sx={{ fontSize: 10 }} color="text.secondary" variant="p" component="span">
@@ -128,8 +125,7 @@ const ManageAccounts = () => {
               </Typography>
             </CardContent>
             <CardActions sx={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
-              <Button sx={{ textTransform: 'none' }} variant='text' size="small" onClick={() => OpenAccDialog(val)}>Edit</Button>
-              <Button sx={{ textTransform: 'none' }} variant='text' size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button>
+              {/* <Button sx={{ textTransform: 'none' }} variant='text' size="small" onClick={() => OpenAccDeleteDialog(val.id)}>Delete</Button> */}
             </CardActions>
           </Card>
         ))}
@@ -140,14 +136,9 @@ const ManageAccounts = () => {
           newAccount={newAccount}
           setNewAccount={setNewAccount}
           addAccount={isEditAccount ? editAccount : addNewAccount}
+          deleteAccount={deleteAccount}
           open={accDialogOpen}
           handleClose={CloseAccDialog}
-        />
-        <DeleteDialog
-          id={accDeleteDialogOpen.id}
-          open={accDeleteDialogOpen.open}
-          handleClose={CloseAccDeleteDialog}
-          deleteData={deleteAccount}
         />
       </Box>
     </Container>

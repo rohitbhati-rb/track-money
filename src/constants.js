@@ -91,3 +91,24 @@ export const COMMON_CARD_CHIP_CSS = {
   marginRight: 1,
   fontSize: 10
 }
+export const Delete_Dialog_Button_Props = {
+  size: 'small',
+  variant: 'outlined',
+  sx: {
+    margin: 2,
+    marginBottom: 0,
+    fontSize: 10,
+    color: 'red',
+    borderColor: 'red',
+    ':hover': { borderColor: 'red' }
+  }
+}
+export const Dialog_Title_Props = {
+  id: "responsive-dialog-title",
+  sx: {
+    paddingTop: 2,
+    paddingBottom: 0.1,
+    paddingX: 3,
+    fontSize: 18
+  }
+}

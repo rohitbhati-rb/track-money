@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Checkbox,
@@ -8,8 +9,9 @@ import {
   FormControlLabel,
   TextField
 } from "@mui/material";
-import { emptyErrObj } from "../../constants";
+import { Delete_Dialog_Button_Props, Dialog_Title_Props, emptyErrObj } from "../../constants";
 import { TxnFormProps } from "../../helpers";
+import DeleteDialog from "./DeleteDialog";
 
 
 const AccountDialog = ({
@@ -19,9 +21,11 @@ const AccountDialog = ({
   newAccount,
   setNewAccount,
   addAccount,
+  deleteAccount,
   open,
   handleClose
 }) => {
+  const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewAccount((prev) => ({ ...prev, [name]: value }))
@@ -46,6 +50,13 @@ const AccountDialog = ({
     addAccount()
     handleClose()
   }
+  const OpenAccDeleteDialog = (id) => {
+    setDeleteAccDialogOpen({ open: true, id: id });
+  };
+  const CloseAccDeleteDialog = () => {
+    setDeleteAccDialogOpen({ open: false, id: undefined });
+  };
+
   const validateAccFormData = (name, value) => {
     let fieldErrors = accError;
     switch (name) {
@@ -80,87 +91,103 @@ const AccountDialog = ({
   let isFormValidated = accError.name.err === false && accError.name.msg === ''
     && accError.openingBalance.msg === '' && accError.creditLimit.msg === '' && accError.creditBalance.msg === ''
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="responsive-dialog-title"
-    >
-      <DialogTitle id="responsive-dialog-title">
-        {isEditAccount ? "Edit Account" : "Add New Account"}
-      </DialogTitle>
-      <DialogContent sx={{ padding: "5 1" }}>
-        <TextField
-          {...TxnFormProps("name", onInputChange)}
-          value={newAccount.name}
-          sx={{ marginTop: 1 }}
-          type="text"
-          error={accError.name.err === null ? false : accError.name.err}
-          helperText={accError.name.msg}
-        />
-        <FormControlLabel
-          sx={{ marginTop: 1 }}
-          control={
-            <Checkbox
-              disabled={isEditAccount}
-              checked={newAccount.isCreditCard}
-              onChange={onCheckBoxChange}
-              inputProps={{ 'aria-label': 'controlled' }}
+    <>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between' }} >
+          <DialogTitle {...Dialog_Title_Props}>
+            {isEditAccount ? "Edit Account" : "Add New Account"}
+          </DialogTitle>
+          {isEditAccount &&
+            <Button
+              {...Delete_Dialog_Button_Props}
+              onClick={() => OpenAccDeleteDialog(newAccount.id)}>
+              Delete
+            </Button>}
+        </div>
+        <DialogContent sx={{ padding: "5 1" }}>
+          <TextField
+            {...TxnFormProps("name", onInputChange)}
+            value={newAccount.name}
+            sx={{ marginTop: 1 }}
+            type="text"
+            error={accError.name.err === null ? false : accError.name.err}
+            helperText={accError.name.msg}
+          />
+          <FormControlLabel
+            sx={{ marginTop: 1 }}
+            control={
+              <Checkbox
+                disabled={isEditAccount}
+                checked={newAccount.isCreditCard}
+                onChange={onCheckBoxChange}
+                inputProps={{ 'aria-label': 'controlled' }}
+              />
+            }
+            label="Credit Card"
+          />
+          {newAccount.isCreditCard ?
+            <TextField
+              {...TxnFormProps("creditLimit", onInputChange)}
+              label={"Credit Limit"}
+              value={newAccount.creditLimit}
+              sx={{ marginTop: 1 }}
+              type="tel"
+              error={accError.creditLimit.err === null ? false : accError.creditLimit.err}
+              helperText={accError.creditLimit.msg}
             />
+            :
+            <TextField
+              {...TxnFormProps("openingBalance", onInputChange)}
+              label="Opening Balance"
+              value={newAccount.openingBalance}
+              sx={{ marginTop: 1 }}
+              type="tel"
+              error={accError.openingBalance.err === null ? false : accError.openingBalance.err}
+              helperText={accError.openingBalance.msg}
+            />}
+          {newAccount.isCreditCard ?
+            <TextField
+              {...TxnFormProps("creditBalance", onInputChange)}
+              label="Credit Balance"
+              value={newAccount.creditBalance}
+              sx={{ marginTop: 2 }}
+              type="tel"
+              error={accError.creditBalance.err === null ? false : accError.creditBalance.err}
+              helperText={accError.creditBalance.msg}
+            />
+            :
+            ""
           }
-          label="Credit Card"
-        />
-        {newAccount.isCreditCard ?
-          <TextField
-            {...TxnFormProps("creditLimit", onInputChange)}
-            label={"Credit Limit"}
-            value={newAccount.creditLimit}
-            sx={{ marginTop: 1 }}
-            type="tel"
-            error={accError.creditLimit.err === null ? false : accError.creditLimit.err}
-            helperText={accError.creditLimit.msg}
-          />
-          :
-          <TextField
-            {...TxnFormProps("openingBalance", onInputChange)}
-            label="Opening Balance"
-            value={newAccount.openingBalance}
-            sx={{ marginTop: 1 }}
-            type="tel"
-            error={accError.openingBalance.err === null ? false : accError.openingBalance.err}
-            helperText={accError.openingBalance.msg}
-          />}
-        {newAccount.isCreditCard ?
-          <TextField
-            {...TxnFormProps("creditBalance", onInputChange)}
-            label="Credit Balance"
-            value={newAccount.creditBalance}
-            sx={{ marginTop: 2 }}
-            type="tel"
-            error={accError.creditBalance.err === null ? false : accError.creditBalance.err}
-            helperText={accError.creditBalance.msg}
-          />
-          :
-          ""
-        }
-      </DialogContent>
-      <DialogActions>
-        <Button
-          autoFocus
-          onClick={handleClose}
-          sx={{ textTransform: "none" }}
-        >
-          {"Cancel"}
-        </Button>
-        <Button
-          autoFocus
-          onClick={handleAddAccount}
-          sx={{ textTransform: "none" }}
-          disabled={!isFormValidated}
-        >
-          {isEditAccount ? "Edit" : "Add"}
-        </Button>
-      </DialogActions>
-    </Dialog>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            autoFocus
+            onClick={handleClose}
+            sx={{ textTransform: "none" }}
+          >
+            {"Cancel"}
+          </Button>
+          <Button
+            autoFocus
+            onClick={handleAddAccount}
+            sx={{ textTransform: "none" }}
+            disabled={!isFormValidated}
+          >
+            {isEditAccount ? "Edit" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <DeleteDialog
+        id={accDeleteDialogOpen.id}
+        open={accDeleteDialogOpen.open}
+        handleClose={CloseAccDeleteDialog}
+        deleteData={deleteAccount}
+      />
+    </>
   )
 }
 
