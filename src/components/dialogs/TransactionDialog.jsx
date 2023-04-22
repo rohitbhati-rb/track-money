@@ -10,6 +10,8 @@ import {
 import TxnForm from './TxnForm';
 import {
   ADD_TRANSACTION,
+  Delete_Dialog_Button_Props,
+  Dialog_Title_Props,
   EDIT_TRANSACTION,
   TxnTabs,
   emptyTxn,
@@ -84,23 +86,12 @@ const TransactionDialog = ({
         aria-labelledby="responsive-dialog-title"
       >
         <div style={{ display: 'flex', justifyContent: 'space-between' }} >
-          <DialogTitle id="responsive-dialog-title" sx={{
-            paddingTop: 2,
-            paddingBottom: 0.1,
-            paddingX: 3,
-            fontSize: 18
-          }}>
+          <DialogTitle {...Dialog_Title_Props}>
             {isEditTxn ? EDIT_TRANSACTION : ADD_TRANSACTION}
           </DialogTitle>
           {isEditTxn &&
             <Button
-              size='small'
-              variant='outlined'
-              sx={{
-                margin: 2,
-                marginBottom: 0,
-                fontSize: 10
-              }}
+              {...Delete_Dialog_Button_Props}
               onClick={() => OpenAccDeleteDialog(newTxn.id)}>
               Delete
             </Button>}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
   Box,
@@ -25,10 +25,6 @@ const Transactions = () => {
   const [txnDialogOpen, setTxnDialogOpen] = useState(false);
   const [newTxn, setNewTxn] = useState(emptyTxn);
   const [txnError, setTxnError] = useState(txnErrorState);
-
-  useEffect(() => {
-    console.log((transactions))
-  }, [transactions])
 
   const OpenTxnDialog = (txn) => {
     if (txn !== null) {
