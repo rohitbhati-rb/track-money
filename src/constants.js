@@ -88,8 +88,10 @@ export const COMMON_CARD_CSS = {
 };
 export const COMMON_CARD_CHIP_CSS = {
   color: "black",
-  marginRight: 1,
-  fontSize: 10
+  background: "#40c4ff",
+  height: '18px',
+  marginRight: 0.75,
+  fontSize: 12
 }
 export const Delete_Dialog_Button_Props = {
   size: 'small',
