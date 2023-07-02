@@ -6,9 +6,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import "@fontsource/roboto";
 import Navbar from "./components/Navbar";
 import BottomNav from "./components/BottomNav";
-import AllTransactions from "./components/AllTransactions";
-import ManageAccounts from "./components/ManageAccounts";
-import Reports from "./components/Reports";
+import AllTransactions from "./components/main/AllTransactions";
+import ManageAccounts from "./components/main/ManageAccounts";
+import Reports from "./components/main/Reports";
 
 const light = {
   palette: {
