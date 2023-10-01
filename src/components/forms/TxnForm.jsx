@@ -99,7 +99,7 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
     let isFormValid = false
     switch (newTxn.type) {
       case 1:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payee)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payee)
         isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.account && !fieldErrors.tags && !fieldErrors.payee
         break
       case 2:
@@ -107,7 +107,7 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
         isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.fromAcc && !fieldErrors.toAcc
         break
       case 3:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payer)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payer)
         isFormValid = isFormValid && !fieldErrors.amount && !fieldErrors.account && !fieldErrors.tags && !fieldErrors.payer
         break
       default: break

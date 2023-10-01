@@ -63,7 +63,7 @@ const TransactionDialog = ({
     let isFormValid = false
     switch (newTxn.type) {
       case 1:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payee)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payee)
         isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payee
         break
       case 2:
@@ -71,7 +71,7 @@ const TransactionDialog = ({
         isFormValid = isFormValid && !txnError.amount && !txnError.fromAcc && !txnError.toAcc
         break
       case 3:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payer)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payer)
         isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payer
         break
       default: break
