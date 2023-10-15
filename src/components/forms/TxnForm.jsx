@@ -1,4 +1,5 @@
 import {
+  Autocomplete,
   Box,
   TextField,
   FormControl,
@@ -6,32 +7,25 @@ import {
   MenuItem,
   InputLabel,
   FormHelperText,
-  Chip,
-  OutlinedInput
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import useTheme from "@mui/material/styles/useTheme";
 
 import { allTags } from "../../appState";
-import { ACCOUNTS_KEY, TxnTagsMenuProps } from "../../constants";
-import { getTagStyles, TxnFormProps } from "../../helpers";
+import { ACCOUNTS_KEY } from "../../constants";
+import { TxnFormProps } from "../../helpers";
 import { useLocalStorageRead } from "../../hooks";
 
 const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => {
-  const theme = useTheme();
   const allAccounts = useLocalStorageRead(ACCOUNTS_KEY, [])
   const onInputChange = (e) => {
     const { name, value } = e.target;
     setNewTxn((prev) => ({ ...prev, [name]: value }))
     validateTxnFormData(name, value)
   }
-  const onTagsChange = (event) => {
-    const { target: { value }, } = event;
-    setNewTxn(
-      (prev) => ({ ...prev, tags: typeof value === 'string' ? value.split(',') : value })
-    );
-    validateTxnFormData("tags", value)
+  const onTagsChange = (event, newValue) => {
+    setNewTxn((prev) => ({ ...prev, tags: newValue }));
+    validateTxnFormData("tags", newValue)
   };
   const AccountDropDown = ({ label, name }) => {
     return (
@@ -148,34 +142,23 @@ const TxnForm = ({ newTxn, setNewTxn, txnError, setTxnError, setFormValid }) => 
         </>
       }
       <FormControl fullWidth required={(newTxn.type === 1 && !newTxn.payee) || (newTxn.type === 3 && !newTxn.payer)} sx={{ my: 1.25 }}>
-        <InputLabel id="demo-multiple-chip-label">Tags</InputLabel>
-        <Select
-          labelId="demo-multiple-chip-label"
-          id="demo-multiple-chip"
+        <Autocomplete
           multiple
+          id="tags-outlined"
+          options={allTags}
+          getOptionLabel={(option) => option.name}
+          defaultValue={newTxn.tags}
+          filterSelectedOptions
           value={newTxn.tags}
           onChange={onTagsChange}
-          error={txnError.tags !== ""}
-          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-          renderValue={(selected) => (
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {selected.map((value) => (
-                <Chip key={value.id} label={value.name} />
-              ))}
-            </Box>
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Tags"
+              placeholder="Select Tags"
+            />
           )}
-          MenuProps={TxnTagsMenuProps}
-        >
-          {allTags.map((val) => (
-            <MenuItem
-              key={val.id}
-              value={val}
-              style={getTagStyles(val, newTxn.tags, theme)}
-            >
-              {val.name}
-            </MenuItem>
-          ))}
-        </Select>
+        />
         <FormHelperText sx={{ color: "red" }}>{txnError.tags}</FormHelperText>
       </FormControl>
       {newTxn.type !== 2 && <TextField

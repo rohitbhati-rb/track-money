@@ -35,10 +35,15 @@ const TransactionDialog = ({
   const [formValid, setFormValid] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const txnTabValueChange = (e, val) => {
-    setTxnTabValue(val);
-    setNewTxn(({ ...emptyTxn, type: val + 1 }))
-    setTxnError(emptyTxnError)
+    if (!isEditTxn) {
+      setTxnTabValue(val);
+      setNewTxn(({ ...emptyTxn, type: val + 1 }))
+      setTxnError(emptyTxnError)
+    } else {
+      setTxnTabValue(Number(newTxn.type) - 1);
+    }
   };
+  console.log(txnTabValue)
   const handleAddTxn = (e) => {
     e.preventDefault();
     validateTxnForm()
@@ -99,15 +104,25 @@ const TransactionDialog = ({
         <form noValidate autoComplete="off">
           <DialogContent sx={{ paddingY: 0, width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs
-                value={txnTabValue}
-                onChange={txnTabValueChange}
-                aria-label="basic tabs example"
-              >
-                <Tab disabled={isEditTxn} label={TxnTabs[0]} {...TxnTabProps(0)} />
-                <Tab disabled={isEditTxn} label={TxnTabs[1]} {...TxnTabProps(1)} />
-                <Tab disabled={isEditTxn} label={TxnTabs[2]} {...TxnTabProps(2)} />
-              </Tabs>
+              {!isEditTxn ?
+                <Tabs
+                  value={txnTabValue}
+                  onChange={txnTabValueChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab label={TxnTabs[0]} {...TxnTabProps(0)} />
+                  <Tab label={TxnTabs[1]} {...TxnTabProps(1)} />
+                  <Tab label={TxnTabs[2]} {...TxnTabProps(2)} />
+                </Tabs>
+                :
+                <Tabs
+                  value={txnTabValue}
+                  onChange={txnTabValueChange}
+                  aria-label="basic tabs example"
+                >
+                  <Tab label={TxnTabs[Number(newTxn.type) - 1]} {...TxnTabProps(0)} />
+                </Tabs>
+              }
             </Box>
             <TxnForm
               newTxn={newTxn}
