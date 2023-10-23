@@ -9,8 +9,8 @@ import {
   Typography
 } from '@mui/material';
 import { v4 as uuidv4 } from 'uuid';
-import AccountDialog from './dialogs/AccountDialog';
-import { getFormattedDate } from '../helpers';
+import AccountDialog from '../dialogs/AccountDialog';
+import { getFormattedDate } from '../../helpers';
 import {
   ACCOUNTS_KEY,
   ADD_ACCOUNT,
@@ -19,9 +19,9 @@ import {
   accErrorState,
   emptyAccount,
   noErrObj
-} from '../constants';
-import { useLocalStorage } from '../hooks';
-import { Delete_Account_And_Related_Txn, Get_Updated_Current_Balance } from '../txn';
+} from '../../constants';
+import { useLocalStorage } from '../../hooks';
+import { Delete_Account_And_Related_Txn, Get_Updated_Current_Balance } from '../../txn';
 
 const ManageAccounts = () => {
   const [accDialogOpen, setAccDialogOpen] = useState(false);

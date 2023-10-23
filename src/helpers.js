@@ -37,15 +37,6 @@ export const TxnTabProps = (index) => {
   };
 }
 
-export const getTagStyles = (name, personName, theme) => {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 export const TxnFormProps = (fieldName, onInputChange, id_value = "", req = true) => {
   return {
     id: `${id_value ? id_value : "outlined-error-helper-text"}`,

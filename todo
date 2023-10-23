@@ -1,0 +1,26 @@
+# TODO
+
+[UI]
+
+[Bugs]
+- txn form allows empty payer and tags fields       [vimp]
+- txn edit form dont allows to edit selected tags   [vimp]
+
+[Future_Scope]
+- Create backend and db service
+- user details section in navbar options
+- Add Reports section
+
+
+#DONE
+> edit acc form, fix form validation bug - need to update all fields then only edit btn is enabled.
+> on editing opening balance, current balance should get updated as per the transactions done on that account.
+> add a edit and delete option for txns which should update the respected acc balance as well.
+> modify date rendering on txn (today, yesterday etc.)
+> latest txn should be on top (sort by createdAt time)
+> bottom menu overlaps with txns and accounts list
+> improve fonts size for mobile and card sizes for both txn and acc
+> move account delete option to account update dailog (similar for txns)
+> update github readme file
+> update ordering of txn card contents
+> added different tags

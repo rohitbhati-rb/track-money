@@ -6,12 +6,12 @@ import {
   Container,
   Typography
 } from '@mui/material';
-import TransactionDialog from './dialogs/TransactionDialog';
-import ExpenseCard from './cards/ExpenseCard';
-import TransferCard from './cards/TransferCard';
-import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../constants';
-import { useLocalStorage } from '../hooks';
-import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit, Delete_Txn, } from '../txn';
+import TransactionDialog from '../dialogs/TransactionDialog';
+import ExpenseCard from '../cards/ExpenseCard';
+import TransferCard from '../cards/TransferCard';
+import { ADD_TRANSACTION, MY_TRANSACTIONS, emptyTxn, txnErrorState, TRANSACTIONS_KEY, ACCOUNTS_KEY } from '../../constants';
+import { useLocalStorage } from '../../hooks';
+import { Update_Account_Balance_On_Txn, Update_Account_Balance_On_Txn_Edit, Delete_Txn, } from '../../txn';
 
 // transaction types
 // 1 -> Expense

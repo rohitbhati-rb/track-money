@@ -35,13 +35,9 @@ const TransactionDialog = ({
   const [formValid, setFormValid] = useState(false);
   const [accDeleteDialogOpen, setDeleteAccDialogOpen] = useState({ open: false, id: undefined });
   const txnTabValueChange = (e, val) => {
-    if (!isEditTxn) {
-      setTxnTabValue(val);
-      setNewTxn(({ ...emptyTxn, type: val + 1 }))
-      setTxnError(emptyTxnError)
-    } else {
-      setTxnTabValue(Number(newTxn.type) - 1);
-    }
+    setTxnTabValue(val);
+    setNewTxn(({ ...emptyTxn, type: val + 1 }))
+    setTxnError(emptyTxnError)
   };
   const handleAddTxn = (e) => {
     e.preventDefault();
@@ -67,7 +63,7 @@ const TransactionDialog = ({
     let isFormValid = false
     switch (newTxn.type) {
       case 1:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payee)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payee)
         isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payee
         break
       case 2:
@@ -75,7 +71,7 @@ const TransactionDialog = ({
         isFormValid = isFormValid && !txnError.amount && !txnError.fromAcc && !txnError.toAcc
         break
       case 3:
-        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags.length !== 0 || newTxn.payer)
+        isFormValid = newTxn.amount && newTxn.account && (newTxn.tags !== [] || newTxn.payer)
         isFormValid = isFormValid && !txnError.amount && !txnError.account && !txnError.tags && !txnError.payer
         break
       default: break
@@ -103,25 +99,15 @@ const TransactionDialog = ({
         <form noValidate autoComplete="off">
           <DialogContent sx={{ paddingY: 0, width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              {!isEditTxn ?
-                <Tabs
-                  value={txnTabValue}
-                  onChange={txnTabValueChange}
-                  aria-label="basic tabs example"
-                >
-                  <Tab label={TxnTabs[0]} {...TxnTabProps(0)} />
-                  <Tab label={TxnTabs[1]} {...TxnTabProps(1)} />
-                  <Tab label={TxnTabs[2]} {...TxnTabProps(2)} />
-                </Tabs>
-                :
-                <Tabs
-                  value={txnTabValue}
-                  onChange={txnTabValueChange}
-                  aria-label="basic tabs example"
-                >
-                  <Tab label={TxnTabs[Number(newTxn.type) - 1]} {...TxnTabProps(0)} />
-                </Tabs>
-              }
+              <Tabs
+                value={txnTabValue}
+                onChange={txnTabValueChange}
+                aria-label="basic tabs example"
+              >
+                <Tab disabled={isEditTxn} label={TxnTabs[0]} {...TxnTabProps(0)} />
+                <Tab disabled={isEditTxn} label={TxnTabs[1]} {...TxnTabProps(1)} />
+                <Tab disabled={isEditTxn} label={TxnTabs[2]} {...TxnTabProps(2)} />
+              </Tabs>
             </Box>
             <TxnForm
               newTxn={newTxn}
