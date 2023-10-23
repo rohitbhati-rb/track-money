@@ -43,7 +43,6 @@ const TransactionDialog = ({
       setTxnTabValue(Number(newTxn.type) - 1);
     }
   };
-  console.log(txnTabValue)
   const handleAddTxn = (e) => {
     e.preventDefault();
     validateTxnForm()
